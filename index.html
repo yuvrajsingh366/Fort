@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yuvraj Singh</title>
+<meta name="description" content="Yuvraj Singh — Full-Stack Web Developer and AI Engineer building intelligent, production-grade web applications.">
+<link rel="icon" type="image/jpeg" href="./assets/images/hero.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+:root{
+  --bg:#080B14; --bg-soft:#0D111C; --surface:rgba(255,255,255,0.045); --surface-strong:rgba(255,255,255,0.075);
+  --border:rgba(255,255,255,0.09); --border-strong:rgba(255,255,255,0.16);
+  --text:#F1F5F9; --text-muted:#94A3B8; --text-faint:#5B6577;
+  --i1:#6366F1; --i2:#8B5CF6; --i3:#22D3EE; --amber:#FBBF24; --green:#34D399; --red:#F87171;
+  --grad: linear-gradient(115deg, var(--i1) 0%, var(--i2) 48%, var(--i3) 100%);
+  --radius:20px;
+}
+[data-theme="light"]{
+  --bg:#F6F7FB; --bg-soft:#FFFFFF; --surface:rgba(15,23,42,0.035); --surface-strong:rgba(15,23,42,0.06);
+  --border:rgba(15,23,42,0.09); --border-strong:rgba(15,23,42,0.16);
+  --text:#0F172A; --text-muted:#475569; --text-faint:#94A3B8;
+}
+*{box-sizing:border-box; scrollbar-width:thin; scrollbar-color:var(--border-strong) transparent;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Inter',sans-serif; overflow-x:hidden;
+  transition:background .5s ease, color .5s ease;
+}
+.font-display{font-family:'Space Grotesk',sans-serif;}
+.font-mono{font-family:'JetBrains Mono',monospace;}
+.text-gradient{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.bg-noise::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:1; opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection{background:var(--i2); color:#fff;}
+
+/* ---------- Loader ---------- */
+#loader{position:fixed; inset:0; z-index:9999; background:var(--bg); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:18px; transition:opacity .6s ease, visibility .6s ease;}
+#loader .mark{font-family:'Space Grotesk',sans-serif; font-size:15px; letter-spacing:.35em; color:var(--text-muted);}
+#loader .bar{width:220px; height:2px; background:var(--border); border-radius:2px; overflow:hidden; position:relative;}
+#loader .bar span{position:absolute; inset:0; width:0%; background:var(--grad); border-radius:2px; animation:loadbar 1.6s ease forwards;}
+@keyframes loadbar{ to{width:100%;} }
+#loader.hide{opacity:0; visibility:hidden; pointer-events:none;}
+
+/* ---------- Cursor ---------- */
+.cursor-dot{position:fixed; width:8px; height:8px; border-radius:50%; background:var(--i3); pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:opacity .2s;}
+.cursor-ring{position:fixed; width:32px; height:32px; border-radius:50%; border:1px solid var(--border-strong); pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .2s,height .2s,opacity .2s, border-color .2s;}
+@media (hover:none){ .cursor-dot,.cursor-ring{display:none;} }
+
+/* ---------- Glass / cards ---------- */
+.glass{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 20px 50px -25px rgba(0,0,0,.6);
+}
+.glass-strong{ background:var(--surface-strong); border:1px solid var(--border-strong); }
+.hover-lift{ transition:transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease, border-color .3s ease; }
+.hover-lift:hover{ transform:translateY(-6px); border-color:var(--border-strong); box-shadow:0 30px 60px -30px rgba(99,102,241,.35); }
+
+/* ---------- Nav ---------- */
+#navbar{ position:fixed; top:0; left:0; right:0; z-index:100; transition:background .4s ease, border-color .4s ease, padding .3s ease; border-bottom:1px solid transparent; }
+#navbar.scrolled{ background:color-mix(in srgb, var(--bg) 78%, transparent); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); }
+.nav-link{ position:relative; color:var(--text-muted); transition:color .3s; }
+.nav-link::after{ content:""; position:absolute; left:0; bottom:-6px; width:0; height:1.5px; background:var(--grad); transition:width .3s ease; }
+.nav-link:hover, .nav-link.active{ color:var(--text); }
+.nav-link:hover::after, .nav-link.active::after{ width:100%; }
+
+/* ---------- Buttons ---------- */
+.btn-grad{ background:var(--grad); background-size:200% auto; color:#fff; transition:background-position .5s ease, transform .3s ease, box-shadow .3s ease; box-shadow:0 12px 30px -10px rgba(99,102,241,.55); }
+.btn-grad:hover{ background-position:right center; transform:translateY(-2px); box-shadow:0 18px 40px -12px rgba(139,92,246,.6); }
+.btn-ghost{ border:1px solid var(--border-strong); color:var(--text); transition:all .3s ease; }
+.btn-ghost:hover{ border-color:var(--i3); background:var(--surface); transform:translateY(-2px); }
+
+/* ---------- Hero ---------- */
+.hero-blob{ position:absolute; border-radius:50%; filter:blur(90px); opacity:.55; z-index:0; }
+.terminal{ font-family:'JetBrains Mono',monospace; }
+.blink{ animation:blink 1s steps(1) infinite; }
+@keyframes blink{ 50%{opacity:0;} }
+.dot-pulse{ box-shadow:0 0 0 0 rgba(52,211,153,.6); animation:pulse 2s infinite; }
+@keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(52,211,153,.55);} 70%{box-shadow:0 0 0 10px rgba(52,211,153,0);} 100%{box-shadow:0 0 0 0 rgba(52,211,153,0);} }
+
+/* ---------- Reveal ---------- */
+.reveal{ opacity:0; transform:translateY(28px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+.reveal.in{ opacity:1; transform:none; }
+
+/* ---------- Section eyebrow ---------- */
+.eyebrow{ font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--i3); letter-spacing:.05em; }
+
+/* ---------- Skills ---------- */
+.skill-bar-track{ height:6px; border-radius:6px; background:var(--border); overflow:hidden; }
+.skill-bar-fill{ height:100%; border-radius:6px; background:var(--grad); width:0%; transition:width 1.4s cubic-bezier(.2,.7,.2,1); }
+.skill-tab{ transition:all .3s ease; }
+.skill-tab.active{ color:var(--text); border-color:var(--i3); }
+
+/* ---------- Timeline ---------- */
+.timeline-line{ background:linear-gradient(var(--i1), var(--i3)); }
+.timeline-dot{ box-shadow:0 0 0 4px var(--bg), 0 0 0 6px var(--border-strong); }
+
+/* ---------- Project card ---------- */
+.project-card .img-wrap{ overflow:hidden; }
+.project-card img{ transition:transform .8s cubic-bezier(.2,.8,.2,1), filter .5s ease; }
+.project-card:hover img{ transform:scale(1.08); }
+.badge{ font-family:'JetBrains Mono',monospace; font-size:11px; padding:3px 9px; border-radius:999px; border:1px solid var(--border-strong); color:var(--text-muted); }
+
+/* ---------- Modal ---------- */
+.modal-overlay{ position:fixed; inset:0; background:rgba(3,5,10,.75); backdrop-filter:blur(6px); z-index:200; display:flex; align-items:center; justify-content:center; opacity:0; visibility:hidden; transition:opacity .35s ease, visibility .35s ease; padding:20px; }
+.modal-overlay.open{ opacity:1; visibility:visible; }
+.modal-box{ transform:scale(.94) translateY(10px); transition:transform .4s cubic-bezier(.2,.8,.2,1); }
+.modal-overlay.open .modal-box{ transform:none; }
+
+/* ---------- Contribution graph ---------- */
+.gh-cell{ width:11px; height:11px; border-radius:3px; background:var(--border); transition:transform .15s ease; }
+.gh-cell:hover{ transform:scale(1.4); }
+
+/* ---------- Testimonial ---------- */
+.testi-track{ display:flex; transition:transform .6s cubic-bezier(.2,.8,.2,1); }
+.testi-dot{ width:8px; height:8px; border-radius:50%; background:var(--border-strong); transition:all .3s ease; cursor:pointer; }
+.testi-dot.active{ background:var(--i3); width:22px; border-radius:5px; }
+
+/* ---------- Toggle switch ---------- */
+.theme-toggle{ width:52px; height:28px; border-radius:999px; border:1px solid var(--border-strong); position:relative; background:var(--surface); }
+.theme-toggle .knob{ position:absolute; top:2px; left:2px; width:22px; height:22px; border-radius:50%; background:var(--grad); transition:left .35s cubic-bezier(.2,.8,.2,1); display:flex; align-items:center; justify-content:center; font-size:11px; color:#fff;}
+[data-theme="light"] .theme-toggle .knob{ left:28px; }
+
+/* ---------- Misc ---------- */
+.filter-btn{ transition:all .3s ease; }
+.filter-btn.active{ background:var(--grad); color:#fff; border-color:transparent; }
+input, textarea{ background:var(--surface); border:1px solid var(--border); color:var(--text); }
+input:focus, textarea:focus{ outline:none; border-color:var(--i3); }
+::placeholder{ color:var(--text-faint); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{ outline:2px solid var(--i3); outline-offset:3px; }
+@media (prefers-reduced-motion: reduce){ *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; } }
+</style>
+</head>
+<body class="bg-noise">
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="mark font-display">YUVRAJ<span style="color:var(--i3)">.</span>SINGH</div>
+  <div class="bar"><span></span></div>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAVBAR -->
+<header id="navbar" class="px-6 md:px-10">
+  <div class="max-w-7xl mx-auto flex items-center justify-between h-20">
+    <a href="#home" class="flex items-center gap-2.5 font-display font-bold text-lg tracking-tight">
+      <img src="./assets/images/hero.jpg" alt="Yuvraj Singh" width="34" height="34" class="w-[34px] h-[34px] rounded-[11px] object-cover border border-[var(--border-strong)]">
+      <span>Yuvraj<span class="text-gradient">.dev</span></span>
+    </a>
+    <nav class="hidden lg:flex items-center gap-8 text-sm font-medium">
+      <a href="#home" class="nav-link active">Home</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#journey" class="nav-link">Journey</a>
+      <a href="#certs" class="nav-link">Awards</a>
+      <a href="#articles" class="nav-link">Articles</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+    <div class="flex items-center gap-4">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark and light mode"><span class="knob"><i class="fas fa-moon"></i></span></button>
+      <a href="#contact" class="hidden md:inline-flex btn-grad px-5 py-2.5 rounded-full text-sm font-semibold">Let's Talk</a>
+      <button id="menuBtn" class="lg:hidden text-xl" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="lg:hidden hidden flex-col gap-1 px-6 pb-6 font-medium">
+    <a href="#home" class="py-3 border-b border-[var(--border)]">Home</a>
+    <a href="#about" class="py-3 border-b border-[var(--border)]">About</a>
+    <a href="#skills" class="py-3 border-b border-[var(--border)]">Skills</a>
+    <a href="#projects" class="py-3 border-b border-[var(--border)]">Projects</a>
+    <a href="#journey" class="py-3 border-b border-[var(--border)]">Journey</a>
+    <a href="#certs" class="py-3 border-b border-[var(--border)]">Awards</a>
+    <a href="#articles" class="py-3 border-b border-[var(--border)]">Articles</a>
+    <a href="#contact" class="py-3">Contact</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="home" class="relative min-h-screen flex items-center px-6 md:px-10 pt-28 pb-16 overflow-hidden">
+  <div class="hero-blob" style="width:480px;height:480px; background:var(--i1); top:-120px; right:-80px;"></div>
+  <div class="hero-blob" style="width:420px;height:420px; background:var(--i3); bottom:-140px; left:-100px; opacity:.35;"></div>
+
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10 w-full">
+    <div>
+      <div class="reveal inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full glass text-xs font-mono">
+        <span class="w-1.5 h-1.5 rounded-full bg-[var(--green)] dot-pulse"></span> B.Tech CSE, KIIT University — Class of 2026 · Open to opportunities
+      </div>
+      <h1 class="reveal font-display font-bold leading-[1.05] text-5xl md:text-6xl xl:text-7xl mb-6">
+        Hi, I'm Yuvraj —<br>
+        I build <span class="text-gradient">intelligent</span><br>
+        web experiences.
+      </h1>
+      <p class="reveal text-[var(--text-muted)] text-lg max-w-lg mb-8 leading-relaxed">
+        Full-stack developer and AI engineer turning ideas into fast, reliable products — from machine-learning pipelines to pixel-perfect interfaces.
+      </p>
+      <div class="reveal flex flex-wrap gap-4 mb-12">
+        <a href="#projects" class="btn-grad px-7 py-3.5 rounded-full font-semibold text-sm inline-flex items-center gap-2">View Projects <i class="fas fa-arrow-right text-xs"></i></a>
+        <a href="#contact" class="btn-ghost px-7 py-3.5 rounded-full font-semibold text-sm glass">Contact Me</a>
+      </div>
+      <div class="reveal flex items-center gap-5 text-lg">
+        <a href="https://www.linkedin.com/in/yuvraj-singh-ba806a279/" target="_blank" rel="noopener" aria-label="LinkedIn" class="w-11 h-11 rounded-full glass-strong border-2 border-[var(--border-strong)] flex items-center justify-center text-lg font-bold hover:text-[var(--i3)] hover:border-[var(--i3)] hover:-translate-y-0.5 transition"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://github.com/yuvrajsingh366/" target="_blank" rel="noopener" aria-label="GitHub" class="w-11 h-11 rounded-full glass-strong border-2 border-[var(--border-strong)] flex items-center justify-center text-lg font-bold hover:text-[var(--i3)] hover:border-[var(--i3)] hover:-translate-y-0.5 transition"><i class="fab fa-github"></i></a>
+        <a href="https://x.com/YuvrajS36010" target="_blank" rel="noopener" aria-label="Twitter / X" class="w-11 h-11 rounded-full glass-strong border-2 border-[var(--border-strong)] flex items-center justify-center text-lg font-bold hover:text-[var(--i3)] hover:border-[var(--i3)] hover:-translate-y-0.5 transition"><i class="fab fa-twitter"></i></a>
+        <a href="https://www.instagram.com/Yuvrajsingh.hi" target="_blank" rel="noopener" aria-label="Instagram" class="w-11 h-11 rounded-full glass-strong border-2 border-[var(--border-strong)] flex items-center justify-center text-lg font-bold hover:text-[var(--i3)] hover:border-[var(--i3)] hover:-translate-y-0.5 transition"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+
+    <div class="reveal relative flex justify-center">
+      <div class="relative w-full max-w-sm">
+        <div class="absolute -inset-4 rounded-[28px] opacity-40 blur-2xl" style="background:var(--grad);"></div>
+        <img src="./assets/images/hero.jpg" alt="Yuvraj Singh" class="relative rounded-[28px] w-full object-cover border border-[var(--border-strong)]" style="aspect-ratio:4/5;">
+        <div class="absolute -bottom-8 -left-8 w-64 glass-strong rounded-2xl p-4 terminal text-xs shadow-2xl">
+          <div class="flex items-center gap-1.5 mb-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-[var(--red)]"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-[var(--amber)]"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-[var(--green)]"></span>
+            <span class="ml-auto text-[10px] text-[var(--text-faint)]">status.sh</span>
+          </div>
+          <div class="text-[var(--text-muted)]"><span class="text-[var(--i3)]">yuvraj@dev</span>:~$ whoami</div>
+          <div id="typedRole" class="text-[var(--text)] font-medium min-h-[18px]"></div>
+          <div class="text-[var(--green)] mt-2">build: passing <i class="fas fa-check"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="#about" class="reveal hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-xs text-[var(--text-faint)] font-mono">
+    scroll <span class="w-px h-8 bg-[var(--border-strong)] relative overflow-hidden"><span class="absolute inset-x-0 h-2 bg-[var(--i3)] animate-bounce"></span></span>
+  </a>
+</section>
+
+<!-- STATS -->
+<section class="px-6 md:px-10 -mt-4 relative z-10">
+  <div class="max-w-6xl mx-auto glass rounded-3xl grid grid-cols-2 md:grid-cols-4 divide-x divide-[var(--border)]">
+    <div class="p-6 md:p-8 text-center reveal">
+      <div class="font-display font-bold text-3xl md:text-4xl text-gradient counter" data-target="7">0</div>
+      <div class="text-xs md:text-sm text-[var(--text-muted)] mt-1 font-mono">Projects Shipped</div>
+    </div>
+    <div class="p-6 md:p-8 text-center reveal">
+      <div class="font-display font-bold text-3xl md:text-4xl text-gradient counter" data-target="16">0</div>
+      <div class="text-xs md:text-sm text-[var(--text-muted)] mt-1 font-mono">Technologies</div>
+    </div>
+    <div class="p-6 md:p-8 text-center reveal">
+      <div class="font-display font-bold text-3xl md:text-4xl text-gradient counter" data-target="4">0</div>
+      <div class="text-xs md:text-sm text-[var(--text-muted)] mt-1 font-mono">ML / AI Builds</div>
+    </div>
+    <div class="p-6 md:p-8 text-center reveal">
+      <div class="font-display font-bold text-3xl md:text-4xl text-gradient counter" data-target="100">0</div>
+      <div class="text-xs md:text-sm text-[var(--text-muted)] mt-1 font-mono">% Committed</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="px-6 md:px-10 py-32">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+    <div class="reveal relative">
+      <div class="absolute -inset-3 rounded-[28px] opacity-25 blur-2xl" style="background:var(--grad);"></div>
+      <img src="./assets/images/hero.jpg" alt="Yuvraj Singh portrait" class="relative rounded-[28px] w-full max-w-md mx-auto border border-[var(--border-strong)] object-cover" style="aspect-ratio:1/1;">
+    </div>
+    <div>
+      <div class="eyebrow reveal">// 01 — About</div>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3 mb-6">Full-stack developer, <span class="text-gradient">AI-curious</span> by nature.</h2>
+      <p class="reveal text-[var(--text-muted)] leading-relaxed mb-4">
+        I completed my B.Tech in Computer Science &amp; Engineering at Kalinga Institute of Industrial Technology (KIIT University) in 2026, specializing in full-stack web development and applied AI. I like building intelligent, user-friendly applications and pushing generative AI past the demo stage into something people actually use.
+      </p>
+      <p class="reveal text-[var(--text-muted)] leading-relaxed mb-8">
+        Right now I'm combining everyday web development with AI automation — the goal is always software that's genuinely useful, not just technically impressive.
+      </p>
+      <div class="reveal grid grid-cols-2 gap-4 mb-8">
+        <div class="glass rounded-2xl p-4">
+          <div class="text-xs font-mono text-[var(--text-faint)] mb-1">Email</div>
+          <div class="text-sm font-medium break-all">yubraj0081@gmail.com</div>
+        </div>
+        <div class="glass rounded-2xl p-4">
+          <div class="text-xs font-mono text-[var(--text-faint)] mb-1">Focus</div>
+          <div class="text-sm font-medium">Web Dev &amp; Machine Learning</div>
+        </div>
+        <div class="glass rounded-2xl p-4">
+          <div class="text-xs font-mono text-[var(--text-faint)] mb-1">Based in</div>
+          <div class="text-sm font-medium">Kathmandu, Nepal</div>
+        </div>
+        <div class="glass rounded-2xl p-4">
+          <div class="text-xs font-mono text-[var(--text-faint)] mb-1">Status</div>
+          <div class="text-sm font-medium flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[var(--green)] dot-pulse"></span>Available</div>
+        </div>
+      </div>
+      <div class="reveal flex flex-wrap gap-4">
+        <a id="resumeBtn" href="./assets/cv/CV.pdf" download="Yuvraj-Singh-Resume.pdf" class="btn-grad inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-sm">
+          Download Resume <i class="fas fa-arrow-down text-xs"></i>
+        </a>
+        <a id="viewResumeBtn" href="./assets/cv/CV.pdf" target="_blank" rel="noopener" class="btn-ghost glass inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-sm">
+          View Resume <i class="fas fa-arrow-up-right-from-square text-xs"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="px-6 md:px-10 py-32 bg-[var(--bg-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14">
+      <div class="eyebrow reveal">// 02 — Skills</div>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">Tools I reach for <span class="text-gradient">every day.</span></h2>
+    </div>
+
+    <div class="reveal flex flex-wrap justify-center gap-3 mb-12" id="skillTabs">
+      <button class="skill-tab active glass px-5 py-2 rounded-full text-sm font-medium border border-transparent" data-cat="frontend">Frontend</button>
+      <button class="skill-tab glass px-5 py-2 rounded-full text-sm font-medium border border-transparent" data-cat="backend">Backend</button>
+      <button class="skill-tab glass px-5 py-2 rounded-full text-sm font-medium border border-transparent" data-cat="ai">AI &amp; ML</button>
+      <button class="skill-tab glass px-5 py-2 rounded-full text-sm font-medium border border-transparent" data-cat="cloud">Cloud</button>
+      <button class="skill-tab glass px-5 py-2 rounded-full text-sm font-medium border border-transparent" data-cat="db">Databases</button>
+      <button class="skill-tab glass px-5 py-2 rounded-full text-sm font-medium border border-transparent" data-cat="tools">Tools</button>
+    </div>
+
+    <div id="skillPanels" class="max-w-3xl mx-auto"></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="px-6 md:px-10 py-32">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-10">
+      <div class="eyebrow reveal">// 03 — Projects</div>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">Selected <span class="text-gradient">work.</span></h2>
+    </div>
+
+    <div class="reveal flex flex-col md:flex-row gap-4 items-center justify-between mb-12">
+      <div class="flex flex-wrap gap-3" id="filterBtns">
+        <button class="filter-btn active glass px-4 py-2 rounded-full text-sm font-medium" data-filter="all">All</button>
+        <button class="filter-btn glass px-4 py-2 rounded-full text-sm font-medium" data-filter="web">Web</button>
+        <button class="filter-btn glass px-4 py-2 rounded-full text-sm font-medium" data-filter="ml">Machine Learning</button>
+        <button class="filter-btn glass px-4 py-2 rounded-full text-sm font-medium" data-filter="ai">AI Systems</button>
+      </div>
+      <div class="relative w-full md:w-72">
+        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-faint)] text-sm"></i>
+        <input id="projectSearch" type="text" placeholder="Search projects..." class="w-full pl-10 pr-4 py-2.5 rounded-full text-sm">
+      </div>
+    </div>
+
+    <div id="projectGrid" class="grid md:grid-cols-2 gap-8"></div>
+    <p id="noResults" class="hidden text-center text-[var(--text-muted)] mt-10 font-mono text-sm">No projects match your search.</p>
+  </div>
+</section>
+
+<!-- JOURNEY (Experience & Education) -->
+<section id="journey" class="px-6 md:px-10 py-32 bg-[var(--bg-soft)]">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16">
+      <div class="eyebrow reveal">// 04 — Journey</div>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">Education &amp; <span class="text-gradient">milestones.</span></h2>
+    </div>
+    <div class="relative pl-10" id="timelineWrap">
+      <div class="timeline-line absolute left-[7px] top-2 bottom-2 w-0.5"></div>
+      <div id="timelineItems" class="space-y-12"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS & AWARDS -->
+<section id="certs" class="px-6 md:px-10 py-32">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14">
+      <div class="eyebrow reveal">// 05 — Recognition</div>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">Certifications &amp; <span class="text-gradient">awards.</span></h2>
+      <p class="reveal text-[var(--text-faint)] text-sm font-mono mt-3">Sample cards below — swap in your real certificates and awards.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6" id="certGrid"></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="px-6 md:px-10 py-32 bg-[var(--bg-soft)] overflow-hidden">
+  <div class="max-w-4xl mx-auto text-center mb-14">
+    <div class="eyebrow reveal">// 06 — Feedback</div>
+    <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">What people <span class="text-gradient">say.</span></h2>
+    <p class="reveal text-[var(--text-faint)] text-sm font-mono mt-3">Sample testimonials — replace with real feedback as you collect it.</p>
+  </div>
+  <div class="max-w-3xl mx-auto relative reveal">
+    <div class="overflow-hidden">
+      <div class="testi-track" id="testiTrack"></div>
+    </div>
+    <div class="flex justify-center gap-2 mt-8" id="testiDots"></div>
+  </div>
+</section>
+
+<!-- ARTICLES -->
+<section id="articles" class="px-6 md:px-10 py-32">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14">
+      <div class="eyebrow reveal">// 07 — Writing</div>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">Notes &amp; <span class="text-gradient">articles.</span></h2>
+      <p class="reveal text-[var(--text-faint)] text-sm font-mono mt-3">Sample entries — connect a real blog or CMS whenever you're ready.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6" id="articleGrid"></div>
+  </div>
+</section>
+
+<!-- GITHUB ACTIVITY -->
+<section class="px-6 md:px-10 py-24 bg-[var(--bg-soft)]">
+  <div class="max-w-5xl mx-auto glass rounded-3xl p-8 md:p-10 reveal">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <div>
+        <div class="eyebrow">// activity</div>
+        <h3 class="font-display font-bold text-2xl mt-2">GitHub contribution graph</h3>
+      </div>
+      <a href="https://github.com/yuvrajsingh366/" target="_blank" rel="noopener" class="btn-ghost glass px-5 py-2.5 rounded-full text-sm font-medium inline-flex items-center gap-2 w-max">
+        <i class="fab fa-github"></i> View full profile
+      </a>
+    </div>
+    <div id="ghGraph" class="grid gap-[3px] justify-start" style="grid-template-columns:repeat(52,11px); grid-auto-flow:column; grid-template-rows:repeat(7,11px);"></div>
+    <div class="flex items-center gap-2 mt-4 text-xs text-[var(--text-faint)] font-mono">
+      <span>Less</span>
+      <span class="gh-cell" style="background:var(--border)"></span>
+      <span class="gh-cell" style="background:#1e3a3a"></span>
+      <span class="gh-cell" style="background:#22D3EE55"></span>
+      <span class="gh-cell" style="background:#22D3EEaa"></span>
+      <span class="gh-cell" style="background:#22D3EE"></span>
+      <span>More</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="px-6 md:px-10 py-32 relative overflow-hidden">
+  <div class="hero-blob" style="width:420px;height:420px; background:var(--i2); top:10%; right:-160px; opacity:.3;"></div>
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-16">
+      <div class="eyebrow reveal">// 08 — Contact</div>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">Let's build something <span class="text-gradient">great.</span></h2>
+      <p class="reveal text-[var(--text-muted)] max-w-xl mx-auto mt-4">Have a project, an internship role, or just want to talk shop? Pick whatever's easiest — book time directly, or send a message below.</p>
+    </div>
+
+    <!-- Calendly CTA -->
+    <a href="https://calendly.com/yubraj0081" target="_blank" rel="noopener" class="reveal hover-lift group glass-strong rounded-3xl p-8 md:p-10 flex flex-col md:flex-row items-center gap-6 mb-10 relative overflow-hidden">
+      <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="background:var(--grad); filter:blur(60px);"></div>
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl text-white shrink-0 relative z-10" style="background:var(--grad)"><i class="fas fa-calendar-check"></i></div>
+      <div class="flex-1 relative z-10 text-center md:text-left">
+        <div class="text-xs font-mono text-[var(--i3)] mb-1">FREE 30-MIN CALL</div>
+        <h3 class="font-display font-bold text-xl md:text-2xl mb-1">Book an appointment on Calendly</h3>
+        <p class="text-sm text-[var(--text-muted)]">Grab a slot that works for you — no back-and-forth emails needed.</p>
+      </div>
+      <span class="btn-grad px-6 py-3 rounded-full text-sm font-semibold inline-flex items-center gap-2 relative z-10 shrink-0">Schedule Now <i class="fas fa-arrow-right text-xs"></i></span>
+    </a>
+
+    <div class="grid lg:grid-cols-5 gap-10">
+      <div class="lg:col-span-2 space-y-5">
+        <div class="reveal glass rounded-2xl p-6 flex items-start gap-4 hover-lift">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center text-[var(--i3)] shrink-0" style="background:var(--surface-strong)"><i class="fas fa-envelope"></i></div>
+          <div class="min-w-0"><div class="text-xs font-mono text-[var(--text-faint)]">Email</div><a href="mailto:yubraj0081@gmail.com" class="font-medium hover:text-[var(--i3)] transition break-all">yubraj0081@gmail.com</a></div>
+        </div>
+        <div class="reveal glass rounded-2xl p-6 flex items-start gap-4 hover-lift">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center text-[var(--i3)] shrink-0" style="background:var(--surface-strong)"><i class="fas fa-phone"></i></div>
+          <div><div class="text-xs font-mono text-[var(--text-faint)]">Phone</div><a href="tel:+9779866660001" class="font-medium hover:text-[var(--i3)] transition">+977 986-666-0001</a></div>
+        </div>
+        <div class="reveal glass rounded-2xl p-6 flex items-start gap-4 hover-lift">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center text-[var(--i3)] shrink-0" style="background:var(--surface-strong)"><i class="fas fa-map-marker-alt"></i></div>
+          <div><div class="text-xs font-mono text-[var(--text-faint)]">Location</div><div class="font-medium">Kathmandu, Nepal</div></div>
+        </div>
+        <div class="reveal glass rounded-2xl p-6 flex items-start gap-4 hover-lift">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center text-[var(--i3)] shrink-0" style="background:var(--surface-strong)"><i class="fas fa-share-nodes"></i></div>
+          <div>
+            <div class="text-xs font-mono text-[var(--text-faint)] mb-2">Elsewhere</div>
+            <div class="flex gap-3 text-xl font-bold">
+              <a href="https://www.linkedin.com/in/yuvraj-singh-ba806a279/" target="_blank" rel="noopener" aria-label="LinkedIn" class="hover:text-[var(--i3)] hover:-translate-y-0.5 transition inline-block"><i class="fab fa-linkedin"></i></a>
+              <a href="https://github.com/yuvrajsingh366/" target="_blank" rel="noopener" aria-label="GitHub" class="hover:text-[var(--i3)] hover:-translate-y-0.5 transition inline-block"><i class="fab fa-github"></i></a>
+              <a href="https://x.com/YuvrajS36010" target="_blank" rel="noopener" aria-label="Twitter / X" class="hover:text-[var(--i3)] hover:-translate-y-0.5 transition inline-block"><i class="fab fa-twitter"></i></a>
+              <a href="https://www.instagram.com/Yuvrajsingh.hi" target="_blank" rel="noopener" aria-label="Instagram" class="hover:text-[var(--i3)] hover:-translate-y-0.5 transition inline-block"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form id="contact-form" action="https://formspree.io/f/meqnladz" method="POST" class="lg:col-span-3 reveal glass-strong rounded-3xl p-8 md:p-10 space-y-5">
+        <div class="grid md:grid-cols-2 gap-5">
+          <div class="relative">
+            <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-faint)] text-sm"></i>
+            <input type="text" name="nameInput" placeholder="Your name" required class="w-full pl-10 pr-4 py-3.5 rounded-xl text-sm">
+          </div>
+          <div class="relative">
+            <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-faint)] text-sm"></i>
+            <input type="email" name="emailInput" placeholder="Your email" required class="w-full pl-10 pr-4 py-3.5 rounded-xl text-sm">
+          </div>
+        </div>
+        <div class="relative">
+          <i class="fas fa-tag absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-faint)] text-sm"></i>
+          <input type="text" name="subjectInput" placeholder="Subject" required class="w-full pl-10 pr-4 py-3.5 rounded-xl text-sm">
+        </div>
+        <div class="relative">
+          <i class="fas fa-comment-dots absolute left-4 top-4 text-[var(--text-faint)] text-sm"></i>
+          <textarea name="messageInput" rows="5" placeholder="Tell me about your project..." required class="w-full pl-10 pr-4 py-3.5 rounded-xl text-sm resize-none"></textarea>
+        </div>
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-1">
+          <button type="submit" class="btn-grad w-full sm:w-auto px-8 py-3.5 rounded-full font-semibold text-sm inline-flex items-center justify-center gap-2">
+            Send Message <i class="fas fa-paper-plane text-xs"></i>
+          </button>
+          <p id="formStatus" class="text-xs font-mono text-[var(--text-faint)]"></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="px-6 md:px-10 pt-20 pb-8 border-t border-[var(--border)]">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-10 mb-14">
+    <div>
+      <div class="flex items-center gap-2.5 font-display font-bold text-lg mb-3">
+        <img src="./assets/images/hero.jpg" alt="Yuvraj Singh" width="30" height="30" class="w-[30px] h-[30px] rounded-[10px] object-cover border border-[var(--border-strong)]">
+        <span>Yuvraj<span class="text-gradient">.dev</span></span>
+      </div>
+      <p class="text-sm text-[var(--text-muted)] leading-relaxed">Open to internships, freelance work, and collaborations on web or AI projects. Reach out any time.</p>
+    </div>
+    <div>
+      <div class="font-semibold mb-4 text-sm">Navigate</div>
+      <div class="flex flex-col gap-2 text-sm text-[var(--text-muted)]">
+        <a href="#home" class="hover:text-[var(--i3)] transition">Home</a>
+        <a href="#about" class="hover:text-[var(--i3)] transition">About</a>
+        <a href="#skills" class="hover:text-[var(--i3)] transition">Skills</a>
+        <a href="#projects" class="hover:text-[var(--i3)] transition">Projects</a>
+      </div>
+    </div>
+    <div>
+      <div class="font-semibold mb-4 text-sm">More</div>
+      <div class="flex flex-col gap-2 text-sm text-[var(--text-muted)]">
+        <a href="#journey" class="hover:text-[var(--i3)] transition">Journey</a>
+        <a href="#certs" class="hover:text-[var(--i3)] transition">Awards</a>
+        <a href="#articles" class="hover:text-[var(--i3)] transition">Articles</a>
+        <a href="#contact" class="hover:text-[var(--i3)] transition">Contact</a>
+      </div>
+    </div>
+    <div>
+      <div class="font-semibold mb-4 text-sm">Contact</div>
+      <div class="flex flex-col gap-2 text-sm text-[var(--text-muted)]">
+        <span><i class="fas fa-envelope mr-2"></i>yubraj0081@gmail.com</span>
+        <span><i class="fas fa-phone mr-2"></i>+977 986-666-0001</span>
+        <span><i class="fas fa-map-marker-alt mr-2"></i>Kathmandu, Nepal</span>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto pt-8 border-t border-[var(--border)] flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[var(--text-faint)] font-mono">
+    <span>© 2026 Yuvraj Singh. Built with care.</span>
+    <span>Crafted with HTML, Tailwind &amp; GSAP</span>
+  </div>
+</footer>
+
+<a href="#home" id="scrollTop" class="fixed bottom-7 right-7 w-12 h-12 rounded-full btn-grad flex items-center justify-center z-40 opacity-0 pointer-events-none transition-opacity duration-300" aria-label="Scroll to top"><i class="fas fa-arrow-up"></i></a>
+
+<!-- PROJECT MODAL -->
+<div class="modal-overlay" id="projectModal">
+  <div class="modal-box glass-strong rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-8 md:p-10 relative">
+    <button id="modalClose" class="absolute top-6 right-6 w-9 h-9 rounded-full glass flex items-center justify-center" aria-label="Close"><i class="fas fa-xmark"></i></button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+const PROJECTS = [
+  {
+    name:"E-commerce Website", cat:"web", tags:["HTML","CSS","JavaScript","PHP","MySQL"],
+    img:"./assets/images/projects/ecommerce.jpg",
+    desc:"Dynamic online store with product browsing, cart management, and secure checkout.",
+    problem:"Small sellers needed an affordable, self-hosted storefront without recurring SaaS fees.",
+    approach:"Built a classic LAMP-style stack: PHP handles server logic and sessions, MySQL stores products/orders, and vanilla JS drives an interactive cart with instant subtotal updates.",
+    outcome:"Delivered a fully working checkout flow with persistent cart state and admin-manageable product listings.",
+    code:"https://github.com/yuvrajsingh366/"
+  },
+  {
+    name:"Network Intrusion Detection System", cat:"ml", tags:["Python","XGBoost","SMOTE","scikit-learn"],
+    img:"./assets/images/projects/nids.jpg",
+    desc:"ML-based intrusion detection trained on UNSW-NB15 with SMOTE balancing and a tuned XGBoost classifier.",
+    problem:"Network traffic datasets are heavily imbalanced, making rare-attack classes hard to detect.",
+    approach:"Applied SMOTE oversampling to correct class imbalance, engineered traffic-flow features, then tuned an XGBoost classifier with cross-validation for the best precision/recall trade-off.",
+    outcome:"Produced a classifier capable of flagging multiple attack categories from the UNSW-NB15 benchmark with strong recall on minority classes.",
+    code:"https://github.com/yuvrajsingh366/"
+  },
+  {
+    name:"Spotify Clone", cat:"web", tags:["HTML","CSS","JavaScript"],
+    img:"./assets/images/projects/spotify.jpg",
+    desc:"A polished music player UI with real-time play, pause, and track controls.",
+    problem:"Wanted to practice building pixel-accurate, animated media UI without a framework.",
+    approach:"Built entirely in vanilla JS — custom audio controls, progress scrubbing, and playlist state management, styled to match Spotify's dark UI conventions.",
+    outcome:"A smooth, framework-free music player with working transport controls and responsive layout.",
+    code:"https://github.com/yuvrajsingh366/"
+  },
+  {
+    name:"Text-to-Speech Converter", cat:"web", tags:["JavaScript","Web Speech API"],
+    img:"./assets/images/projects/tts.jpg",
+    desc:"Browser-based text-to-speech tool for real-time speech synthesis from typed input.",
+    problem:"Needed a lightweight, install-free way to convert typed text into spoken audio.",
+    approach:"Used the browser's native Web Speech API to synthesize speech client-side, with voice and rate controls exposed in a minimal UI.",
+    outcome:"Zero-dependency tool that converts any typed text to speech instantly in the browser.",
+    code:"https://github.com/yuvrajsingh366/"
+  },
+  {
+    name:"Twitter Sentiment Analysis", cat:"ml", tags:["Python","NLP","Tweepy","Scikit-learn","Flask"],
+    img:"./assets/images/projects/twitter-sentiment.jpg",
+    desc:"NLP pipeline that classifies tweets as positive, neutral, or negative and visualizes sentiment trends for any keyword or hashtag.",
+    problem:"Understanding public opinion on a topic means reading thousands of noisy, informal posts by hand.",
+    approach:"Pulled tweets via the Twitter/X API with Tweepy, cleaned and tokenized text (stopwords, emojis, hashtags), then trained a TF-IDF + classifier pipeline (with a VADER baseline) to score sentiment. A Flask dashboard renders live sentiment breakdowns and trend charts.",
+    outcome:"A searchable dashboard that turns raw tweet streams into a live positive/neutral/negative breakdown for any query in seconds.",
+    code:"https://github.com/yuvrajsingh366/"
+  },
+  {
+    name:"Face Recognition EVM", cat:"ai", tags:["Python","OpenCV","face_recognition","Flask","MySQL"],
+    img:"./assets/images/projects/face-evm.jpg",
+    desc:"Biometric electronic voting system that authenticates voters by face before releasing a one-time digital ballot.",
+    problem:"Traditional voter-ID checks are manual and vulnerable to impersonation or duplicate voting.",
+    approach:"Used OpenCV and the face_recognition library to encode and match registered voter faces in real time via webcam. A Flask backend cross-checks the match against a MySQL voter roll, locks the voter after one ballot cast, and logs each vote securely.",
+    outcome:"A working prototype voting flow — face scan, identity match, single-use ballot, tamper-evident vote log — demonstrating biometric access control end to end.",
+    code:"https://github.com/yuvrajsingh366/"
+  },
+  {
+    name:"Heart Disease Prediction", cat:"ml", tags:["Python","Pandas","Scikit-learn","Flask","SQL"],
+    img:"./assets/images/projects/heart-disease.jpg",
+    desc:"ML web app that predicts a patient's risk of heart disease from clinical parameters like age, cholesterol, and blood pressure.",
+    problem:"Early risk screening for heart disease usually needs a clinician to manually weigh several overlapping risk factors.",
+    approach:"Cleaned and explored the UCI Heart Disease dataset in Pandas, compared Logistic Regression, Random Forest, and XGBoost models with cross-validation, and picked the best-performing classifier. Wrapped it in a Flask web form that takes patient vitals and returns a risk prediction, with results logged to a SQL database.",
+    outcome:"A deployable risk-screening tool that takes standard clinical inputs and returns an instant, model-backed heart-disease risk prediction.",
+    code:"https://github.com/yuvrajsingh366/"
+  }
+];
+
+const SKILLS = {
+  frontend: [ {n:"HTML5",v:95,i:"fab fa-html5"}, {n:"CSS3",v:90,i:"fab fa-css3-alt"}, {n:"JavaScript",v:88,i:"fab fa-js"}, {n:"React",v:78,i:"fab fa-react"}, {n:"Tailwind CSS",v:82,i:"fas fa-wind"} ],
+  backend:  [ {n:"PHP",v:75,i:"fab fa-php"}, {n:"Node.js",v:65,i:"fab fa-node-js"}, {n:"REST APIs",v:80,i:"fas fa-plug"}, {n:"Flask",v:70,i:"fas fa-flask"} ],
+  ai:       [ {n:"Python",v:88,i:"fab fa-python"}, {n:"scikit-learn",v:78,i:"fas fa-chart-line"}, {n:"XGBoost",v:72,i:"fas fa-diagram-project"}, {n:"NLP",v:68,i:"fas fa-comments"}, {n:"OpenCV",v:65,i:"fas fa-eye"} ],
+  cloud:    [ {n:"Firebase",v:76,i:"fas fa-fire"}, {n:"Vercel",v:70,i:"fas fa-bolt"}, {n:"Basic AWS",v:55,i:"fab fa-aws"} ],
+  db:       [ {n:"MySQL",v:80,i:"fas fa-database"}, {n:"Firebase Realtime DB",v:72,i:"fas fa-database"} ],
+  tools:    [ {n:"Git & GitHub",v:88,i:"fab fa-git-alt"}, {n:"VS Code",v:92,i:"fas fa-code"}, {n:"Networks & DNS",v:65,i:"fas fa-network-wired"}, {n:"C++",v:70,i:"fas fa-code"}, {n:"Java",v:66,i:"fab fa-java"} ]
+};
+
+const CERTS = [
+  {icon:"fa-certificate", title:"Add your certification", org:"Issuing organization", note:"Replace this card with a real credential and date."},
+  {icon:"fa-trophy", title:"Add an award", org:"Event / organization", note:"Hackathon win, dean's list, competition placement, etc."},
+  {icon:"fa-award", title:"Add a badge", org:"Platform name", note:"Coursera, freeCodeCamp, AWS, Google, etc."}
+];
+
+const ARTICLES = [
+  {title:"Sample article title", tag:"Web Dev", excerpt:"Replace with a short summary of a real post once you start publishing."},
+  {title:"Sample article title", tag:"Machine Learning", excerpt:"Link this card to a Medium, Hashnode, or dev.to post."},
+  {title:"Sample article title", tag:"Career", excerpt:"Notes on your learning journey, project write-ups, or tutorials."}
+];
+
+const TESTIMONIALS = [
+  {name:"Sample Reviewer", role:"Placeholder — Project Collaborator", quote:"Replace this with real feedback from a classmate, mentor, or client once you have it — quotes like this carry far more weight when they're genuine."},
+  {name:"Sample Reviewer", role:"Placeholder — Hackathon Teammate", quote:"Swap in a short, specific quote about what it was like working with you — what you built, and how you approached problems."},
+  {name:"Sample Reviewer", role:"Placeholder — Professor / Mentor", quote:"A credible testimonial section builds trust fast — even two or three short real quotes will outperform generic placeholder text."}
+];
+
+/* ---------------- Loader ---------------- */
+window.addEventListener("load", () => {
+  setTimeout(() => document.getElementById("loader").classList.add("hide"), 900);
+});
+
+/* ---------------- Cursor ---------------- */
+const cd = document.getElementById("cursorDot"), cr = document.getElementById("cursorRing");
+window.addEventListener("mousemove", e => {
+  cd.style.left = e.clientX+"px"; cd.style.top = e.clientY+"px";
+  cr.style.left = e.clientX+"px"; cr.style.top = e.clientY+"px";
+});
+document.querySelectorAll("a,button").forEach(el=>{
+  el.addEventListener("mouseenter", ()=>{ cr.style.width="46px"; cr.style.height="46px"; cr.style.borderColor="var(--i3)"; });
+  el.addEventListener("mouseleave", ()=>{ cr.style.width="32px"; cr.style.height="32px"; cr.style.borderColor="var(--border-strong)"; });
+});
+
+/* ---------------- Theme toggle (memory-safe, no localStorage dependency) ---------------- */
+let themeState = "dark";
+try { themeState = localStorage.getItem("yuvraj-theme") || "dark"; } catch(e) {}
+if (themeState === "light") document.documentElement.setAttribute("data-theme","light");
+document.getElementById("themeToggle").addEventListener("click", () => {
+  const isLight = document.documentElement.getAttribute("data-theme") === "light";
+  if (isLight) { document.documentElement.removeAttribute("data-theme"); themeState="dark"; }
+  else { document.documentElement.setAttribute("data-theme","light"); themeState="light"; }
+  try { localStorage.setItem("yuvraj-theme", themeState); } catch(e) {}
+});
+
+/* ---------------- Mobile menu ---------------- */
+const menuBtn = document.getElementById("menuBtn"), mobileMenu = document.getElementById("mobileMenu");
+menuBtn.addEventListener("click", () => {
+  const open = mobileMenu.classList.toggle("flex");
+  mobileMenu.classList.toggle("hidden");
+  menuBtn.innerHTML = open ? '<i class="fas fa-xmark"></i>' : '<i class="fas fa-bars"></i>';
+});
+mobileMenu.querySelectorAll("a").forEach(a=>a.addEventListener("click", ()=>{
+  mobileMenu.classList.add("hidden"); mobileMenu.classList.remove("flex");
+  menuBtn.innerHTML='<i class="fas fa-bars"></i>';
+}));
+
+/* ---------------- Navbar scroll state + active link + scrollTop ---------------- */
+const navbar = document.getElementById("navbar"), scrollTopBtn = document.getElementById("scrollTop");
+const navLinks = document.querySelectorAll(".nav-link");
+const sections = ["home","about","skills","projects","journey","certs","articles","contact"].map(id=>document.getElementById(id));
+window.addEventListener("scroll", () => {
+  navbar.classList.toggle("scrolled", window.scrollY > 40);
+  scrollTopBtn.style.opacity = window.scrollY > 500 ? "1" : "0";
+  scrollTopBtn.style.pointerEvents = window.scrollY > 500 ? "auto" : "none";
+  let current = sections[0];
+  sections.forEach(s => { if (s && window.scrollY >= s.offsetTop - 140) current = s; });
+  navLinks.forEach(l => l.classList.toggle("active", current && l.getAttribute("href") === "#"+current.id));
+});
+
+/* ---------------- Reveal on scroll ---------------- */
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); revealObserver.unobserve(e.target); } });
+}, {threshold:0.15});
+document.querySelectorAll(".reveal").forEach(el=>revealObserver.observe(el));
+
+/* ---------------- Typed roles in hero terminal ---------------- */
+const roles = ["Full-Stack Developer", "AI Engineer", "Problem Solver", "Lifelong Learner"];
+let ri=0, ci=0, deleting=false;
+const typedEl = document.getElementById("typedRole");
+function typeLoop(){
+  const word = roles[ri];
+  typedEl.textContent = deleting ? word.slice(0, ci--) : word.slice(0, ci++);
+  if (!deleting && ci === word.length+1){ deleting = true; setTimeout(typeLoop, 1200); return; }
+  if (deleting && ci === 0){ deleting = false; ri = (ri+1)%roles.length; }
+  setTimeout(typeLoop, deleting ? 40 : 90);
+}
+typeLoop();
+
+/* ---------------- Counters ---------------- */
+const counters = document.querySelectorAll(".counter");
+const counterObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el = e.target, target = +el.dataset.target;
+      let cur = 0; const step = Math.max(1, Math.round(target/40));
+      const t = setInterval(()=>{ cur += step; if(cur>=target){cur=target; clearInterval(t);} el.textContent = cur; }, 30);
+      counterObserver.unobserve(el);
+    }
+  });
+}, {threshold:0.4});
+counters.forEach(c=>counterObserver.observe(c));
+
+/* ---------------- Skills tabs + bars ---------------- */
+const skillTabs = document.querySelectorAll(".skill-tab");
+const skillPanels = document.getElementById("skillPanels");
+function renderSkills(cat){
+  skillPanels.innerHTML = SKILLS[cat].map(s => `
+    <div class="mb-6 reveal in">
+      <div class="flex justify-between items-center mb-2 text-sm font-medium">
+        <span class="flex items-center gap-3">
+          <span class="w-9 h-9 rounded-xl flex items-center justify-center text-sm" style="background:var(--surface-strong); color:var(--i3)"><i class="${s.i}"></i></span>
+          ${s.n}
+        </span>
+        <span class="text-[var(--text-faint)] font-mono">${s.v}%</span>
+      </div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" style="width:${s.v}%"></div></div>
+    </div>`).join("");
+}
+skillTabs.forEach(tab=>{
+  tab.addEventListener("click", ()=>{
+    skillTabs.forEach(t=>t.classList.remove("active"));
+    tab.classList.add("active");
+    renderSkills(tab.dataset.cat);
+  });
+});
+renderSkills("frontend");
+
+/* ---------------- Projects: render, filter, search, modal ---------------- */
+const grid = document.getElementById("projectGrid");
+const noResults = document.getElementById("noResults");
+function projectCard(p, i){
+  return `<div class="project-card glass rounded-3xl overflow-hidden hover-lift reveal in" data-cat="${p.cat}" data-name="${p.name.toLowerCase()}" data-desc="${p.desc.toLowerCase()}">
+    <div class="img-wrap h-56 relative">
+      <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover">
+      <div class="absolute top-3 right-3 badge glass-strong">${p.cat === 'ml' ? 'Machine Learning' : p.cat === 'ai' ? 'AI System' : 'Web'}</div>
+    </div>
+    <div class="p-6">
+      <h3 class="font-display font-bold text-xl mb-2">${p.name}</h3>
+      <p class="text-sm text-[var(--text-muted)] leading-relaxed mb-4">${p.desc}</p>
+      <div class="flex flex-wrap gap-2 mb-5">${p.tags.map(t=>`<span class="badge">${t}</span>`).join("")}</div>
+      <div class="flex items-center gap-3">
+        <button class="case-study-btn btn-grad px-4 py-2 rounded-full text-xs font-semibold" data-idx="${i}">Case Study</button>
+        <a href="${p.code}" target="_blank" rel="noopener" class="btn-ghost glass px-4 py-2 rounded-full text-xs font-semibold inline-flex items-center gap-1.5"><i class="fab fa-github"></i> Code</a>
+      </div>
+    </div>
+  </div>`;
+}
+function renderProjects(){ grid.innerHTML = PROJECTS.map(projectCard).join(""); attachModalHandlers(); }
+renderProjects();
+
+document.getElementById("filterBtns").addEventListener("click", (e)=>{
+  const btn = e.target.closest(".filter-btn"); if(!btn) return;
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  applyFilters();
+});
+document.getElementById("projectSearch").addEventListener("input", applyFilters);
+
+function applyFilters(){
+  const activeFilter = document.querySelector(".filter-btn.active").dataset.filter;
+  const q = document.getElementById("projectSearch").value.trim().toLowerCase();
+  let visible = 0;
+  document.querySelectorAll(".project-card").forEach(card=>{
+    const matchCat = activeFilter === "all" || card.dataset.cat === activeFilter;
+    const matchQ = !q || card.dataset.name.includes(q) || card.dataset.desc.includes(q);
+    const show = matchCat && matchQ;
+    card.style.display = show ? "" : "none";
+    if(show) visible++;
+  });
+  noResults.classList.toggle("hidden", visible !== 0);
+}
+
+const modal = document.getElementById("projectModal");
+const modalContent = document.getElementById("modalContent");
+function attachModalHandlers(){
+  document.querySelectorAll(".case-study-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const p = PROJECTS[+btn.dataset.idx];
+      modalContent.innerHTML = `
+        <img src="${p.img}" alt="${p.name}" class="w-full h-56 object-cover rounded-2xl mb-6">
+        <h3 class="font-display font-bold text-2xl mb-2">${p.name}</h3>
+        <div class="flex flex-wrap gap-2 mb-6">${p.tags.map(t=>`<span class="badge">${t}</span>`).join("")}</div>
+        <div class="space-y-5 text-sm leading-relaxed text-[var(--text-muted)]">
+          <div><div class="text-[var(--i3)] font-mono text-xs mb-1">THE PROBLEM</div><p>${p.problem}</p></div>
+          <div><div class="text-[var(--i3)] font-mono text-xs mb-1">THE APPROACH</div><p>${p.approach}</p></div>
+          <div><div class="text-[var(--i3)] font-mono text-xs mb-1">THE OUTCOME</div><p>${p.outcome}</p></div>
+        </div>
+        <a href="${p.code}" target="_blank" rel="noopener" class="btn-grad inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold mt-7"><i class="fab fa-github"></i> View Code</a>`;
+      modal.classList.add("open");
+    });
+  });
+}
+document.getElementById("modalClose").addEventListener("click", ()=>modal.classList.remove("open"));
+modal.addEventListener("click", (e)=>{ if(e.target === modal) modal.classList.remove("open"); });
+
+/* ---------------- Timeline ---------------- */
+const TIMELINE = [
+  {year:"2026", title:"B.Tech, Computer Science &amp; Engineering — Graduated", org:"Kalinga Institute of Industrial Technology (KIIT University)", desc:"Specialized in full-stack development and applied AI; built production-style projects alongside coursework."},
+  {year:"2025 – 2026", title:"Applied AI & Machine Learning", org:"Independent projects", desc:"Shipped an intrusion-detection classifier, an NLP sentiment pipeline, a biometric authentication system, and a heart-disease risk predictor."},
+  {year:"Ongoing", title:"Full-Stack Web Development", org:"Independent projects", desc:"Built and shipped multiple end-to-end web apps spanning e-commerce, media UIs, and browser-based tools."}
+];
+document.getElementById("timelineItems").innerHTML = TIMELINE.map(t=>`
+  <div class="relative reveal in">
+    <div class="timeline-dot absolute -left-10 top-1.5 w-3.5 h-3.5 rounded-full" style="background:var(--i3)"></div>
+    <div class="glass rounded-2xl p-6 hover-lift">
+      <div class="text-xs font-mono text-[var(--i3)] mb-1">${t.year}</div>
+      <h3 class="font-display font-bold text-lg mb-1">${t.title}</h3>
+      <div class="text-sm text-[var(--text-muted)] mb-2">${t.org}</div>
+      <p class="text-sm text-[var(--text-muted)] leading-relaxed">${t.desc}</p>
+    </div>
+  </div>`).join("");
+
+/* ---------------- Certs & Articles ---------------- */
+document.getElementById("certGrid").innerHTML = CERTS.map(c=>`
+  <div class="glass rounded-2xl p-7 hover-lift reveal in text-center">
+    <div class="w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center text-xl" style="background:var(--grad)"><i class="fas ${c.icon} text-white"></i></div>
+    <h3 class="font-display font-bold mb-1">${c.title}</h3>
+    <div class="text-xs text-[var(--i3)] font-mono mb-3">${c.org}</div>
+    <p class="text-sm text-[var(--text-faint)]">${c.note}</p>
+  </div>`).join("");
+
+document.getElementById("articleGrid").innerHTML = ARTICLES.map(a=>`
+  <div class="glass rounded-2xl p-7 hover-lift reveal in">
+    <span class="badge mb-4 inline-block">${a.tag}</span>
+    <h3 class="font-display font-bold text-lg mb-2">${a.title}</h3>
+    <p class="text-sm text-[var(--text-muted)] leading-relaxed mb-4">${a.excerpt}</p>
+    <span class="text-xs font-mono text-[var(--text-faint)]">Coming soon →</span>
+  </div>`).join("");
+
+/* ---------------- Testimonials carousel ---------------- */
+const testiTrack = document.getElementById("testiTrack");
+const testiDots = document.getElementById("testiDots");
+testiTrack.innerHTML = TESTIMONIALS.map(t=>`
+  <div class="min-w-full px-4">
+    <div class="glass rounded-3xl p-10 text-center">
+      <i class="fas fa-quote-left text-2xl text-[var(--i3)] opacity-60 mb-5"></i>
+      <p class="text-lg leading-relaxed mb-6">${t.quote}</p>
+      <div class="font-semibold">${t.name}</div>
+      <div class="text-xs text-[var(--text-faint)] font-mono">${t.role}</div>
+    </div>
+  </div>`).join("");
+testiDots.innerHTML = TESTIMONIALS.map((_,i)=>`<span class="testi-dot ${i===0?'active':''}" data-i="${i}"></span>`).join("");
+let testiIdx = 0;
+function goTesti(i){ testiIdx=i; testiTrack.style.transform = `translateX(-${i*100}%)`; testiDots.querySelectorAll(".testi-dot").forEach((d,j)=>d.classList.toggle("active", j===i)); }
+testiDots.querySelectorAll(".testi-dot").forEach(d=>d.addEventListener("click", ()=>goTesti(+d.dataset.i)));
+setInterval(()=>goTesti((testiIdx+1)%TESTIMONIALS.length), 5500);
+
+/* ---------------- GitHub contribution graph (decorative, deterministic) ---------------- */
+const ghGraph = document.getElementById("ghGraph");
+function seeded(i){ const x = Math.sin(i*999)*10000; return x - Math.floor(x); }
+let html = "";
+for(let i=0;i<364;i++){
+  const r = seeded(i);
+  let bg = "var(--border)";
+  if(r>0.85) bg = "#22D3EE"; else if(r>0.68) bg = "#22D3EEaa"; else if(r>0.5) bg = "#22D3EE55"; else if(r>0.35) bg = "#1e3a3a";
+  html += `<div class="gh-cell" style="background:${bg}" title="Activity level"></div>`;
+}
+ghGraph.innerHTML = html;
+
+/* ---------------- Contact form (client-side confirmation) ---------------- */
+document.getElementById("contact-form").addEventListener("submit", function(e){
+  const status = document.getElementById("formStatus");
+  status.textContent = "Sending...";
+});
+
+/* ---------------- GSAP hero parallax ---------------- */
+if (window.gsap && window.ScrollTrigger) {
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.utils.toArray(".hero-blob").forEach((blob, i)=>{
+    gsap.to(blob, { y: i===0 ? 80 : -60, scrollTrigger:{ trigger:"#home", start:"top top", end:"bottom top", scrub:true } });
+  });
+}
+</script><!-- AI CHAT WIDGET -->
+<style>
+#chatToggle{ position:fixed; bottom:24px; right:24px; width:60px; height:60px; border-radius:50%; background:var(--grad); border:none; cursor:pointer; z-index:9990; display:flex; align-items:center; justify-content:center; box-shadow:0 14px 34px -10px rgba(99,102,241,.6); transition:transform .25s ease; }
+#chatToggle:hover{ transform:scale(1.08); }
+#chatToggle i{ color:#fff; font-size:22px; }
+#chatToggle .chat-ping{ position:absolute; top:-3px; right:-3px; width:14px; height:14px; border-radius:50%; background:var(--green); border:2px solid var(--bg); }
+#chatToggle .chat-ping::after{ content:""; position:absolute; inset:0; border-radius:50%; background:var(--green); animation:chatPing 1.8s ease-out infinite; }
+@keyframes chatPing{ 0%{ transform:scale(1); opacity:.7; } 100%{ transform:scale(2.4); opacity:0; } }
+
+#chatWindow{ position:fixed; bottom:96px; right:24px; width:370px; max-width:calc(100vw - 32px); height:520px; max-height:calc(100vh - 140px); border-radius:22px; z-index:9991; display:flex; flex-direction:column; overflow:hidden; opacity:0; transform:translateY(16px) scale(.97); pointer-events:none; transition:opacity .25s ease, transform .25s ease; background:var(--bg-soft); border:1px solid var(--border-strong); box-shadow:0 30px 70px -20px rgba(0,0,0,.55); }
+#chatWindow.open{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+
+#chatHeader{ background:var(--grad); padding:16px 18px; display:flex; align-items:center; gap:12px; flex-shrink:0; }
+#chatHeader img{ width:38px; height:38px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,.5); }
+#chatHeader .chat-title{ color:#fff; font-weight:700; font-size:14px; line-height:1.2; }
+#chatHeader .chat-status{ color:rgba(255,255,255,.85); font-size:11px; display:flex; align-items:center; gap:5px; margin-top:2px; }
+#chatHeader .chat-status span.dot{ width:6px; height:6px; border-radius:50%; background:var(--green); display:inline-block; }
+#chatClose{ margin-left:auto; background:rgba(255,255,255,.16); border:none; width:30px; height:30px; border-radius:50%; color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s; }
+#chatClose:hover{ background:rgba(255,255,255,.28); }
+
+#chatBody{ flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; background:var(--bg-soft); }
+#chatBody::-webkit-scrollbar{ width:5px; }
+#chatBody::-webkit-scrollbar-thumb{ background:var(--border-strong); border-radius:10px; }
+
+.msg{ max-width:85%; padding:10px 13px; border-radius:16px; font-size:13px; line-height:1.5; }
+.msg.bot{ align-self:flex-start; background:var(--surface-strong); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; }
+.msg.user{ align-self:flex-end; background:var(--grad); color:#fff; border-bottom-right-radius:4px; }
+.msg ul{ margin:6px 0 0 16px; padding:0; }
+.msg li{ margin-bottom:3px; }
+.msg a{ color:var(--i3); text-decoration:underline; }
+
+.chat-typing{ align-self:flex-start; background:var(--surface-strong); border:1px solid var(--border); border-radius:16px; border-bottom-left-radius:4px; padding:11px 14px; display:flex; gap:4px; }
+.chat-typing span{ width:6px; height:6px; border-radius:50%; background:var(--text-faint); animation:chatBounce 1.2s infinite; }
+.chat-typing span:nth-child(2){ animation-delay:.15s; }
+.chat-typing span:nth-child(3){ animation-delay:.3s; }
+@keyframes chatBounce{ 0%,60%,100%{ transform:translateY(0); opacity:.5; } 30%{ transform:translateY(-4px); opacity:1; } }
+
+#chatChips{ display:flex; flex-wrap:wrap; gap:6px; padding:0 16px 12px; flex-shrink:0; }
+.chat-chip{ font-size:11.5px; font-weight:600; padding:6px 12px; border-radius:999px; background:var(--surface-strong); border:1px solid var(--border-strong); color:var(--text); cursor:pointer; transition:all .2s; white-space:nowrap; }
+.chat-chip:hover{ border-color:var(--i3); color:var(--i3); }
+
+#chatInputRow{ display:flex; align-items:center; gap:8px; padding:12px 14px; border-top:1px solid var(--border); background:var(--bg-soft); flex-shrink:0; }
+#chatInput{ flex:1; background:var(--surface); border:1px solid var(--border-strong); border-radius:999px; padding:10px 16px; font-size:13px; color:var(--text); outline:none; }
+#chatInput:focus{ border-color:var(--i3); }
+#chatSend{ width:38px; height:38px; border-radius:50%; background:var(--grad); border:none; color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .2s; }
+#chatSend:hover{ transform:scale(1.08); }
+
+@media (max-width:480px){
+  #chatWindow{ right:16px; bottom:88px; width:calc(100vw - 32px); }
+  #chatToggle{ right:16px; bottom:16px; }
+}
+</style>
+
+<button id="chatToggle" aria-label="Open project assistant chat">
+  <i class="fas fa-comment-dots"></i>
+  <span class="chat-ping"></span>
+</button>
+
+<div id="chatWindow">
+  <div id="chatHeader">
+    <img src="./assets/images/hero.jpg" alt="Yuvraj Singh">
+    <div>
+      <div class="chat-title">Yuvraj's IT Project Assistant</div>
+      <div class="chat-status"><span class="dot"></span> Online — ask about my projects</div>
+    </div>
+    <button id="chatClose" aria-label="Close chat"><i class="fas fa-xmark"></i></button>
+  </div>
+  <div id="chatBody"></div>
+  <div id="chatChips">
+    <button class="chat-chip" data-q="What IT projects have you built?">IT Projects</button>
+    <button class="chat-chip" data-q="What are your technical skills?">Skills</button>
+    <button class="chat-chip" data-q="How can I contact you?">Contact</button>
+    <button class="chat-chip" data-q="Can I see your resume?">Resume</button>
+  </div>
+  <div id="chatInputRow">
+    <input id="chatInput" type="text" placeholder="Ask about an IT project..." autocomplete="off">
+    <button id="chatSend" aria-label="Send message"><i class="fas fa-paper-plane text-xs"></i></button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const toggle = document.getElementById("chatToggle");
+  const win = document.getElementById("chatWindow");
+  const closeBtn = document.getElementById("chatClose");
+  const body = document.getElementById("chatBody");
+  const input = document.getElementById("chatInput");
+  const sendBtn = document.getElementById("chatSend");
+  const chips = document.getElementById("chatChips");
+  let opened = false;
+
+  function scrollDown(){ body.scrollTop = body.scrollHeight; }
+
+  function addMsg(text, who){
+    const el = document.createElement("div");
+    el.className = "msg " + who;
+    el.innerHTML = text;
+    body.appendChild(el);
+    scrollDown();
+  }
+
+  function showTyping(){
+    const el = document.createElement("div");
+    el.className = "chat-typing";
+    el.id = "chatTypingIndicator";
+    el.innerHTML = "<span></span><span></span><span></span>";
+    body.appendChild(el);
+    scrollDown();
+  }
+  function hideTyping(){
+    const el = document.getElementById("chatTypingIndicator");
+    if (el) el.remove();
+  }
+
+  function botReply(userText){
+    showTyping();
+    const delay = 550 + Math.random() * 500;
+    setTimeout(() => {
+      hideTyping();
+      addMsg(getBotResponse(userText), "bot");
+    }, delay);
+  }
+
+  // Knowledge base pulled from this portfolio's IT / ML / web projects
+  const PROJECTS = (typeof window.PROJECTS !== "undefined") ? window.PROJECTS : (typeof PROJECTS !== "undefined" ? PROJECTS : []);
+
+  function projectListHTML(){
+    if (!PROJECTS.length) return "I couldn't load the project list right now — check the Projects section above!";
+    let items = PROJECTS.map(p => `<li><strong>${p.name}</strong> — ${p.tags.slice(0,3).join(", ")}</li>`).join("");
+    return `Here are the IT projects I've built:<ul>${items}</ul>Ask me about any one by name, e.g. "tell me about the intrusion detection system."`;
+  }
+
+  function findProject(text){
+    const t = text.toLowerCase();
+    return PROJECTS.find(p => t.includes(p.name.toLowerCase())) ||
+      PROJECTS.find(p => {
+        const words = p.name.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+        return words.some(w => t.includes(w));
+      }) ||
+      (t.includes("nids") || t.includes("intrusion") ? PROJECTS.find(p => p.name.includes("Intrusion")) : null) ||
+      (t.includes("sentiment") || t.includes("twitter") || t.includes("tweet") ? PROJECTS.find(p => p.name.includes("Twitter")) : null) ||
+      (t.includes("evm") || t.includes("voting") || t.includes("face") ? PROJECTS.find(p => p.name.includes("Face")) : null) ||
+      (t.includes("heart") ? PROJECTS.find(p => p.name.includes("Heart")) : null) ||
+      (t.includes("spotify") || t.includes("music") ? PROJECTS.find(p => p.name.includes("Spotify")) : null) ||
+      (t.includes("speech") || t.includes("tts") || t.includes("voice") ? PROJECTS.find(p => p.name.includes("Text-to-Speech")) : null) ||
+      (t.includes("ecommerce") || t.includes("e-commerce") || t.includes("shop") || t.includes("store") ? PROJECTS.find(p => p.name.includes("E-commerce")) : null) ||
+      null;
+  }
+
+  function getBotResponse(raw){
+    const t = raw.toLowerCase().trim();
+
+    if (/^(hi|hey|hello|yo|sup)\b/.test(t)) {
+      return "Hey! 👋 I'm a quick assistant for Yuvraj's IT projects. Ask me things like \"what IT projects have you built?\" or \"tell me about the NIDS project.\"";
+    }
+    if (t.includes("thank")) {
+      return "You're welcome! Let me know if you'd like details on another project.";
+    }
+    if (t.includes("resume") || t.includes("cv")) {
+      return `You can view or download the resume right from the About section — or grab it directly here: <a href="./assets/cv/CV.pdf" target="_blank" rel="noopener">Open Resume (PDF)</a>.`;
+    }
+    if (t.includes("contact") || t.includes("email") || t.includes("phone") || t.includes("reach") || t.includes("hire")) {
+      return `You can reach Yuvraj at <a href="mailto:yubraj0081@gmail.com">yubraj0081@gmail.com</a>, or use the Contact form further down the page. He's currently open to opportunities.`;
+    }
+    if (t.includes("skill") || t.includes("tech stack") || t.includes("stack") || t.includes("technolog")) {
+      return "Core stack: HTML5, CSS3, JavaScript, React, Tailwind — plus Python, Flask, SQL, and ML tooling like scikit-learn and XGBoost for the AI-focused IT projects. Want details on a specific project that uses one of these?";
+    }
+    if (t.includes("education") || t.includes("college") || t.includes("degree") || t.includes("study")) {
+      return "Yuvraj is finishing a B.Tech in Computer Science & Engineering at Kalinga Institute of Industrial Technology (KIIT University), Class of 2026.";
+    }
+    if (t.includes("experience") || t.includes("journey") || t.includes("background")) {
+      return "Yuvraj's built hands-on IT/ML projects — an intrusion detection system, a Twitter sentiment pipeline, a biometric voting app, and a heart-disease risk predictor — alongside full-stack web apps like an e-commerce store. Check the Journey section for the full timeline.";
+    }
+    if (t.includes("project")) {
+      return projectListHTML();
+    }
+
+    const match = findProject(t);
+    if (match) {
+      return `<strong>${match.name}</strong><br>${match.desc}<br><span style="color:var(--text-faint)">Tech: ${match.tags.join(", ")}</span><br><a href="${match.code}" target="_blank" rel="noopener">View code on GitHub</a>`;
+    }
+
+    return `I'm best at answering questions about Yuvraj's IT projects — try "what IT projects have you built?" or ask about one by name (NIDS, sentiment analysis, face-recognition EVM, heart disease predictor, e-commerce site, Spotify clone, or text-to-speech tool).`;
+  }
+
+  function openChat(){
+    win.classList.add("open");
+    opened = true;
+    if (!body.dataset.greeted) {
+      body.dataset.greeted = "1";
+      setTimeout(() => addMsg("Hi, I'm Yuvraj's project assistant 🤖 Ask me about any of his IT projects — tech stack, approach, or outcome.", "bot"), 250);
+    }
+  }
+  function closeChat(){ win.classList.remove("open"); }
+
+  toggle.addEventListener("click", () => opened && win.classList.contains("open") ? closeChat() : openChat());
+  closeBtn.addEventListener("click", closeChat);
+
+  function handleSend(text){
+    const val = (text || input.value).trim();
+    if (!val) return;
+    addMsg(val.replace(/</g,"&lt;"), "user");
+    input.value = "";
+    botReply(val);
+  }
+
+  sendBtn.addEventListener("click", () => handleSend());
+  input.addEventListener("keydown", (e) => { if (e.key === "Enter") handleSend(); });
+  chips.addEventListener("click", (e) => {
+    const btn = e.target.closest(".chat-chip");
+    if (!btn) return;
+    if (!win.classList.contains("open")) openChat();
+    handleSend(btn.dataset.q);
+  });
+})();
+</script>
+
+</body>
+</html>
