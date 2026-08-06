@@ -74,6 +74,50 @@ body{
 .nav-link::after{ content:""; position:absolute; left:0; bottom:-6px; width:0; height:1.5px; background:var(--grad); transition:width .3s ease; }
 .nav-link:hover, .nav-link.active{ color:var(--text); }
 .nav-link:hover::after, .nav-link.active::after{ width:100%; }
+#mobileMenu{
+  background:var(--bg);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  box-shadow:0 20px 40px -20px rgba(0,0,0,.5);
+  max-height:calc(100vh - 80px); overflow-y:auto;
+}
+#mobileMenu a{
+  color:var(--text); display:flex; align-items:center; justify-content:space-between;
+  padding:14px 12px; border-radius:12px; transition:background .2s ease, color .2s ease, padding-left .2s ease;
+}
+#mobileMenu a:hover, #mobileMenu a:active{ background:var(--surface); padding-left:18px; color:var(--i3); }
+#mobileMenu a.active{ background:var(--surface-strong); color:var(--text); }
+#mobileMenu a.active::after{ content:"\f105"; font-family:"Font Awesome 6 Free"; font-weight:900; color:var(--i3); }
+#mobileMenu .mobile-cta{
+  margin-top:14px; display:flex; justify-content:center; align-items:center;
+  background:var(--grad); color:#fff; font-weight:600; font-size:14px;
+  padding:14px; border-radius:999px; box-shadow:0 12px 30px -10px rgba(99,102,241,.55);
+}
+
+/* ---------- Language switcher ---------- */
+.lang-switcher{ position:relative; }
+.lang-btn{
+  width:38px; height:38px; border-radius:999px; border:1px solid var(--border-strong);
+  background:var(--surface); color:var(--text); display:flex; align-items:center; justify-content:center;
+  font-size:14px; cursor:pointer; transition:border-color .2s, color .2s;
+}
+.lang-btn:hover{ border-color:var(--i3); color:var(--i3); }
+.lang-dropdown{
+  position:absolute; top:calc(100% + 10px); right:0; min-width:150px;
+  background:var(--bg); border:1px solid var(--border); border-radius:14px;
+  padding:6px; box-shadow:0 20px 40px -20px rgba(0,0,0,.6); z-index:200;
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+}
+.lang-dropdown.hidden{ display:none; }
+.lang-option{
+  display:flex; align-items:center; justify-content:space-between; width:100%; text-align:left;
+  padding:10px 12px; border-radius:9px; font-size:13px; font-weight:500;
+  color:var(--text-muted); background:transparent; border:none; cursor:pointer;
+  transition:background .2s, color .2s;
+}
+.lang-option:hover{ background:var(--surface); color:var(--text); }
+.lang-option.active{ color:var(--text); background:var(--surface-strong); }
+.lang-option.active i{ color:var(--i3); }
 
 /* ---------- Buttons ---------- */
 .btn-grad{ background:var(--grad); background-size:200% auto; color:#fff; transition:background-position .5s ease, transform .3s ease, box-shadow .3s ease; box-shadow:0 12px 30px -10px rgba(99,102,241,.55); }
@@ -162,30 +206,42 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       <span>Yuvraj<span class="text-gradient">.dev</span></span>
     </a>
     <nav class="hidden lg:flex items-center gap-8 text-sm font-medium">
-      <a href="#home" class="nav-link active">Home</a>
-      <a href="#about" class="nav-link">About</a>
-      <a href="#skills" class="nav-link">Skills</a>
-      <a href="#projects" class="nav-link">Projects</a>
-      <a href="#journey" class="nav-link">Journey</a>
-      <a href="#certs" class="nav-link">Awards</a>
-      <a href="#articles" class="nav-link">Articles</a>
-      <a href="#contact" class="nav-link">Contact</a>
+      <a href="#home" class="nav-link active" data-i18n="nav.home">Home</a>
+      <a href="#about" class="nav-link" data-i18n="nav.about">About</a>
+      <a href="#skills" class="nav-link" data-i18n="nav.skills">Skills</a>
+      <a href="#projects" class="nav-link" data-i18n="nav.projects">Projects</a>
+      <a href="#journey" class="nav-link" data-i18n="nav.journey">Journey</a>
+      <a href="#certs" class="nav-link" data-i18n="nav.awards">Awards</a>
+      <a href="#articles" class="nav-link" data-i18n="nav.articles">Articles</a>
+      <a href="#contact" class="nav-link" data-i18n="nav.contact">Contact</a>
     </nav>
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-3">
+      <div class="lang-switcher" id="langSwitcher">
+        <button class="lang-btn" id="langBtn" aria-label="Change language" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-globe"></i>
+        </button>
+        <div id="langDropdown" class="lang-dropdown hidden">
+          <button class="lang-option active" data-lang="en">English <i class="fas fa-check" style="opacity:0"></i></button>
+          <button class="lang-option" data-lang="hi">हिन्दी <i class="fas fa-check" style="opacity:0"></i></button>
+          <button class="lang-option" data-lang="ne">नेपाली <i class="fas fa-check" style="opacity:0"></i></button>
+          <button class="lang-option" data-lang="de">Deutsch <i class="fas fa-check" style="opacity:0"></i></button>
+        </div>
+      </div>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark and light mode"><span class="knob"><i class="fas fa-moon"></i></span></button>
-      <a href="#contact" class="hidden md:inline-flex btn-grad px-5 py-2.5 rounded-full text-sm font-semibold">Let's Talk</a>
+      <a href="#contact" class="hidden md:inline-flex btn-grad px-5 py-2.5 rounded-full text-sm font-semibold" data-i18n="nav.letsTalk">Let's Talk</a>
       <button id="menuBtn" class="lg:hidden text-xl" aria-label="Open menu"><i class="fas fa-bars"></i></button>
     </div>
   </div>
   <div id="mobileMenu" class="lg:hidden hidden flex-col gap-1 px-6 pb-6 font-medium">
-    <a href="#home" class="py-3 border-b border-[var(--border)]">Home</a>
-    <a href="#about" class="py-3 border-b border-[var(--border)]">About</a>
-    <a href="#skills" class="py-3 border-b border-[var(--border)]">Skills</a>
-    <a href="#projects" class="py-3 border-b border-[var(--border)]">Projects</a>
-    <a href="#journey" class="py-3 border-b border-[var(--border)]">Journey</a>
-    <a href="#certs" class="py-3 border-b border-[var(--border)]">Awards</a>
-    <a href="#articles" class="py-3 border-b border-[var(--border)]">Articles</a>
-    <a href="#contact" class="py-3">Contact</a>
+    <a href="#home" class="active" data-i18n="nav.home">Home</a>
+    <a href="#about" data-i18n="nav.about">About</a>
+    <a href="#skills" data-i18n="nav.skills">Skills</a>
+    <a href="#projects" data-i18n="nav.projects">Projects</a>
+    <a href="#journey" data-i18n="nav.journey">Journey</a>
+    <a href="#certs" data-i18n="nav.awards">Awards</a>
+    <a href="#articles" data-i18n="nav.articles">Articles</a>
+    <a href="#contact" data-i18n="nav.contact">Contact</a>
+    <a href="#contact" class="mobile-cta" data-i18n="nav.letsTalk">Let's Talk</a>
   </div>
 </header>
 
@@ -197,19 +253,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10 w-full">
     <div>
       <div class="reveal inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full glass text-xs font-mono">
-        <span class="w-1.5 h-1.5 rounded-full bg-[var(--green)] dot-pulse"></span> B.Tech CSE, KIIT University — Class of 2026 · Open to opportunities
+        <span class="w-1.5 h-1.5 rounded-full bg-[var(--green)] dot-pulse"></span> <span data-i18n="hero.badge">B.Tech CSE, KIIT University — Class of 2026 · Open to opportunities</span>
       </div>
       <h1 class="reveal font-display font-bold leading-[1.05] text-5xl md:text-6xl xl:text-7xl mb-6">
-        Hi, I'm Yuvraj —<br>
-        I build <span class="text-gradient">intelligent</span><br>
-        web experiences.
+        <span data-i18n="hero.line1">Hi, I'm Yuvraj —</span><br>
+        <span data-i18n="hero.line2">I build</span> <span class="text-gradient" data-i18n="hero.intelligent">intelligent</span><br>
+        <span data-i18n="hero.line3">web experiences.</span>
       </h1>
-      <p class="reveal text-[var(--text-muted)] text-lg max-w-lg mb-8 leading-relaxed">
+      <p class="reveal text-[var(--text-muted)] text-lg max-w-lg mb-8 leading-relaxed" data-i18n="hero.desc">
         Full-stack developer and AI engineer turning ideas into fast, reliable products — from machine-learning pipelines to pixel-perfect interfaces.
       </p>
       <div class="reveal flex flex-wrap gap-4 mb-12">
-        <a href="#projects" class="btn-grad px-7 py-3.5 rounded-full font-semibold text-sm inline-flex items-center gap-2">View Projects <i class="fas fa-arrow-right text-xs"></i></a>
-        <a href="#contact" class="btn-ghost px-7 py-3.5 rounded-full font-semibold text-sm glass">Contact Me</a>
+        <a href="#projects" class="btn-grad px-7 py-3.5 rounded-full font-semibold text-sm inline-flex items-center gap-2"><span data-i18n="btn.viewProjects">View Projects</span> <i class="fas fa-arrow-right text-xs"></i></a>
+        <a href="#contact" class="btn-ghost px-7 py-3.5 rounded-full font-semibold text-sm glass" data-i18n="btn.contactMe">Contact Me</a>
       </div>
       <div class="reveal flex items-center gap-5 text-lg">
         <a href="https://www.linkedin.com/in/yuvraj-singh-ba806a279/" target="_blank" rel="noopener" aria-label="LinkedIn" class="w-11 h-11 rounded-full glass-strong border-2 border-[var(--border-strong)] flex items-center justify-center text-lg font-bold hover:text-[var(--i3)] hover:border-[var(--i3)] hover:-translate-y-0.5 transition"><i class="fab fa-linkedin-in"></i></a>
@@ -274,7 +330,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     </div>
     <div>
       <div class="eyebrow reveal">// 01 — About</div>
-      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3 mb-6">Full-stack developer, <span class="text-gradient">AI-curious</span> by nature.</h2>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3 mb-6"><span data-i18n="about.h2a">Full-stack developer,</span> <span class="text-gradient" data-i18n="about.h2b">AI-curious</span> <span data-i18n="about.h2c">by nature.</span></h2>
       <p class="reveal text-[var(--text-muted)] leading-relaxed mb-4">
         I completed my B.Tech in Computer Science &amp; Engineering at Kalinga Institute of Industrial Technology (KIIT University) in 2026, specializing in full-stack web development and applied AI. I like building intelligent, user-friendly applications and pushing generative AI past the demo stage into something people actually use.
       </p>
@@ -316,7 +372,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   <div class="max-w-7xl mx-auto">
     <div class="text-center mb-14">
       <div class="eyebrow reveal">// 02 — Skills</div>
-      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">Tools I reach for <span class="text-gradient">every day.</span></h2>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3"><span data-i18n="skills.h2a">Tools I reach for</span> <span class="text-gradient" data-i18n="skills.h2b">every day.</span></h2>
     </div>
 
     <div class="reveal flex flex-wrap justify-center gap-3 mb-12" id="skillTabs">
@@ -337,7 +393,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   <div class="max-w-7xl mx-auto">
     <div class="text-center mb-10">
       <div class="eyebrow reveal">// 03 — Projects</div>
-      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">Selected <span class="text-gradient">work.</span></h2>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3"><span data-i18n="projects.h2a">Selected</span> <span class="text-gradient" data-i18n="projects.h2b">work.</span></h2>
     </div>
 
     <div class="reveal flex flex-col md:flex-row gap-4 items-center justify-between mb-12">
@@ -363,7 +419,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   <div class="max-w-4xl mx-auto">
     <div class="text-center mb-16">
       <div class="eyebrow reveal">// 04 — Journey</div>
-      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">Education &amp; <span class="text-gradient">milestones.</span></h2>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3"><span data-i18n="journey.h2a">Education &amp;</span> <span class="text-gradient" data-i18n="journey.h2b">milestones.</span></h2>
     </div>
     <div class="relative pl-10" id="timelineWrap">
       <div class="timeline-line absolute left-[7px] top-2 bottom-2 w-0.5"></div>
@@ -377,7 +433,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   <div class="max-w-7xl mx-auto">
     <div class="text-center mb-14">
       <div class="eyebrow reveal">// 05 — Recognition</div>
-      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">Certifications &amp; <span class="text-gradient">awards.</span></h2>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3"><span data-i18n="certs.h2a">Certifications &amp;</span> <span class="text-gradient" data-i18n="certs.h2b">awards.</span></h2>
       <p class="reveal text-[var(--text-faint)] text-sm font-mono mt-3">Sample cards below — swap in your real certificates and awards.</p>
     </div>
     <div class="grid md:grid-cols-3 gap-6" id="certGrid"></div>
@@ -388,7 +444,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 <section class="px-6 md:px-10 py-32 bg-[var(--bg-soft)] overflow-hidden">
   <div class="max-w-4xl mx-auto text-center mb-14">
     <div class="eyebrow reveal">// 06 — Feedback</div>
-    <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">What people <span class="text-gradient">say.</span></h2>
+    <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3"><span data-i18n="testimonials.h2a">What people</span> <span class="text-gradient" data-i18n="testimonials.h2b">say.</span></h2>
     <p class="reveal text-[var(--text-faint)] text-sm font-mono mt-3">Sample testimonials — replace with real feedback as you collect it.</p>
   </div>
   <div class="max-w-3xl mx-auto relative reveal">
@@ -404,7 +460,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   <div class="max-w-7xl mx-auto">
     <div class="text-center mb-14">
       <div class="eyebrow reveal">// 07 — Writing</div>
-      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">Notes &amp; <span class="text-gradient">articles.</span></h2>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3"><span data-i18n="articles.h2a">Notes &amp;</span> <span class="text-gradient" data-i18n="articles.h2b">articles.</span></h2>
       <p class="reveal text-[var(--text-faint)] text-sm font-mono mt-3">Sample entries — connect a real blog or CMS whenever you're ready.</p>
     </div>
     <div class="grid md:grid-cols-3 gap-6" id="articleGrid"></div>
@@ -442,7 +498,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   <div class="max-w-6xl mx-auto relative z-10">
     <div class="text-center mb-16">
       <div class="eyebrow reveal">// 08 — Contact</div>
-      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3">Let's build something <span class="text-gradient">great.</span></h2>
+      <h2 class="reveal font-display font-bold text-4xl md:text-5xl mt-3"><span data-i18n="contact.h2a">Let's build something</span> <span class="text-gradient" data-i18n="contact.h2b">great.</span></h2>
       <p class="reveal text-[var(--text-muted)] max-w-xl mx-auto mt-4">Have a project, an internship role, or just want to talk shop? Pick whatever's easiest — book time directly, or send a message below.</p>
     </div>
 
@@ -702,6 +758,114 @@ mobileMenu.querySelectorAll("a").forEach(a=>a.addEventListener("click", ()=>{
   menuBtn.innerHTML='<i class="fas fa-bars"></i>';
 }));
 
+/* ---------------- Language switcher ---------------- */
+const translations = {
+  en: {
+    "nav.home":"Home", "nav.about":"About", "nav.skills":"Skills", "nav.projects":"Projects",
+    "nav.journey":"Journey", "nav.awards":"Awards", "nav.articles":"Articles", "nav.contact":"Contact",
+    "nav.letsTalk":"Let's Talk",
+    "hero.badge":"B.Tech CSE, KIIT University — Class of 2026 · Open to opportunities",
+    "hero.line1":"Hi, I'm Yuvraj —", "hero.line2":"I build", "hero.intelligent":"intelligent", "hero.line3":"web experiences.",
+    "hero.desc":"Full-stack developer and AI engineer turning ideas into fast, reliable products — from machine-learning pipelines to pixel-perfect interfaces.",
+    "btn.viewProjects":"View Projects", "btn.contactMe":"Contact Me",
+    "about.h2a":"Full-stack developer,", "about.h2b":"AI-curious", "about.h2c":"by nature.",
+    "skills.h2a":"Tools I reach for", "skills.h2b":"every day.",
+    "projects.h2a":"Selected", "projects.h2b":"work.",
+    "journey.h2a":"Education &", "journey.h2b":"milestones.",
+    "certs.h2a":"Certifications &", "certs.h2b":"awards.",
+    "testimonials.h2a":"What people", "testimonials.h2b":"say.",
+    "articles.h2a":"Notes &", "articles.h2b":"articles.",
+    "contact.h2a":"Let's build something", "contact.h2b":"great."
+  },
+  hi: {
+    "nav.home":"होम", "nav.about":"परिचय", "nav.skills":"कौशल", "nav.projects":"प्रोजेक्ट्स",
+    "nav.journey":"यात्रा", "nav.awards":"पुरस्कार", "nav.articles":"लेख", "nav.contact":"संपर्क",
+    "nav.letsTalk":"बात करें",
+    "hero.badge":"बी.टेक सीएसई, केआईआईटी विश्वविद्यालय — बैच 2026 · अवसरों के लिए तैयार",
+    "hero.line1":"नमस्ते, मैं युवराज हूँ —", "hero.line2":"मैं बनाता हूँ", "hero.intelligent":"स्मार्ट", "hero.line3":"वेब अनुभव।",
+    "hero.desc":"फुल-स्टैक डेवलपर और एआई इंजीनियर, जो विचारों को तेज़ और भरोसेमंद प्रोडक्ट्स में बदलता है — मशीन-लर्निंग पाइपलाइन से लेकर बेहतरीन इंटरफ़ेस तक।",
+    "btn.viewProjects":"प्रोजेक्ट्स देखें", "btn.contactMe":"संपर्क करें",
+    "about.h2a":"फुल-स्टैक डेवलपर,", "about.h2b":"एआई में रुचि रखने वाला", "about.h2c":"स्वभाव से।",
+    "skills.h2a":"रोज़ इस्तेमाल किए जाने वाले", "skills.h2b":"उपकरण।",
+    "projects.h2a":"चुनिंदा", "projects.h2b":"काम।",
+    "journey.h2a":"शिक्षा और", "journey.h2b":"उपलब्धियाँ।",
+    "certs.h2a":"प्रमाणपत्र और", "certs.h2b":"पुरस्कार।",
+    "testimonials.h2a":"लोग क्या", "testimonials.h2b":"कहते हैं।",
+    "articles.h2a":"नोट्स और", "articles.h2b":"लेख।",
+    "contact.h2a":"कुछ शानदार बनाते हैं", "contact.h2b":"साथ मिलकर।"
+  },
+  ne: {
+    "nav.home":"गृहपृष्ठ", "nav.about":"बारेमा", "nav.skills":"सीपहरू", "nav.projects":"परियोजनाहरू",
+    "nav.journey":"यात्रा", "nav.awards":"पुरस्कार", "nav.articles":"लेखहरू", "nav.contact":"सम्पर्क",
+    "nav.letsTalk":"कुरा गरौं",
+    "hero.badge":"बी.टेक सीएसई, केआईआईटी विश्वविद्यालय — ब्याच २०२६ · अवसरका लागि तयार",
+    "hero.line1":"नमस्ते, म युवराज हुँ —", "hero.line2":"म बनाउँछु", "hero.intelligent":"बुद्धिमान", "hero.line3":"वेब अनुभवहरू।",
+    "hero.desc":"फुल-स्ट्याक डेभलपर र एआई इन्जिनियर, जसले विचारहरूलाई छिटो र भरपर्दो उत्पादनमा बदल्छ — मेसिन-लर्निङ पाइपलाइनदेखि उत्कृष्ट इन्टरफेससम्म।",
+    "btn.viewProjects":"परियोजनाहरू हेर्नुहोस्", "btn.contactMe":"सम्पर्क गर्नुहोस्",
+    "about.h2a":"फुल-स्ट्याक डेभलपर,", "about.h2b":"एआईमा रुचि भएको", "about.h2c":"स्वभावैले।",
+    "skills.h2a":"हरेक दिन प्रयोग हुने", "skills.h2b":"उपकरणहरू।",
+    "projects.h2a":"छानिएका", "projects.h2b":"कामहरू।",
+    "journey.h2a":"शिक्षा र", "journey.h2b":"उपलब्धिहरू।",
+    "certs.h2a":"प्रमाणपत्र र", "certs.h2b":"पुरस्कारहरू।",
+    "testimonials.h2a":"मानिसहरू के", "testimonials.h2b":"भन्छन्।",
+    "articles.h2a":"नोट र", "articles.h2b":"लेखहरू।",
+    "contact.h2a":"केही उत्कृष्ट बनाऔं", "contact.h2b":"सँगै।"
+  },
+  de: {
+    "nav.home":"Start", "nav.about":"Über mich", "nav.skills":"Fähigkeiten", "nav.projects":"Projekte",
+    "nav.journey":"Werdegang", "nav.awards":"Auszeichnungen", "nav.articles":"Artikel", "nav.contact":"Kontakt",
+    "nav.letsTalk":"Kontaktieren",
+    "hero.badge":"B.Tech CSE, KIIT University — Jahrgang 2026 · Offen für neue Möglichkeiten",
+    "hero.line1":"Hallo, ich bin Yuvraj —", "hero.line2":"Ich entwickle", "hero.intelligent":"intelligente", "hero.line3":"Web-Erlebnisse.",
+    "hero.desc":"Full-Stack-Entwickler und KI-Ingenieur, der Ideen in schnelle, zuverlässige Produkte verwandelt — von Machine-Learning-Pipelines bis zu pixelgenauen Oberflächen.",
+    "btn.viewProjects":"Projekte ansehen", "btn.contactMe":"Kontakt aufnehmen",
+    "about.h2a":"Full-Stack-Entwickler,", "about.h2b":"von Natur aus KI-begeistert", "about.h2c":".",
+    "skills.h2a":"Werkzeuge, die ich täglich", "skills.h2b":"nutze.",
+    "projects.h2a":"Ausgewählte", "projects.h2b":"Arbeiten.",
+    "journey.h2a":"Ausbildung &", "journey.h2b":"Meilensteine.",
+    "certs.h2a":"Zertifikate &", "certs.h2b":"Auszeichnungen.",
+    "testimonials.h2a":"Was andere", "testimonials.h2b":"sagen.",
+    "articles.h2a":"Notizen &", "articles.h2b":"Artikel.",
+    "contact.h2a":"Lass uns etwas Großartiges", "contact.h2b":"bauen."
+  }
+};
+const langBtn = document.getElementById("langBtn"), langDropdown = document.getElementById("langDropdown");
+function applyLanguage(lang){
+  const dict = translations[lang] || translations.en;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const key = el.getAttribute("data-i18n");
+    if (dict[key]) el.textContent = dict[key];
+  });
+  document.querySelectorAll(".lang-option").forEach(btn=>{
+    const active = btn.getAttribute("data-lang") === lang;
+    btn.classList.toggle("active", active);
+    btn.querySelector("i").style.opacity = active ? "1" : "0";
+  });
+  document.documentElement.setAttribute("lang", lang);
+  try { localStorage.setItem("yuvraj-lang", lang); } catch(e) {}
+}
+langBtn.addEventListener("click", (e)=>{
+  e.stopPropagation();
+  const isHidden = langDropdown.classList.toggle("hidden");
+  langBtn.setAttribute("aria-expanded", String(!isHidden));
+});
+document.addEventListener("click", (e)=>{
+  if (!langDropdown.classList.contains("hidden") && !langDropdown.contains(e.target) && e.target !== langBtn) {
+    langDropdown.classList.add("hidden");
+    langBtn.setAttribute("aria-expanded","false");
+  }
+});
+document.querySelectorAll(".lang-option").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    applyLanguage(btn.getAttribute("data-lang"));
+    langDropdown.classList.add("hidden");
+    langBtn.setAttribute("aria-expanded","false");
+  });
+});
+let savedLang = "en";
+try { savedLang = localStorage.getItem("yuvraj-lang") || "en"; } catch(e) {}
+applyLanguage(savedLang);
+
 /* ---------------- Navbar scroll state + active link + scrollTop ---------------- */
 const navbar = document.getElementById("navbar"), scrollTopBtn = document.getElementById("scrollTop");
 const navLinks = document.querySelectorAll(".nav-link");
@@ -926,6 +1090,17 @@ if (window.gsap && window.ScrollTrigger) {
 #chatToggle .chat-ping{ position:absolute; top:-3px; right:-3px; width:14px; height:14px; border-radius:50%; background:var(--green); border:2px solid var(--bg); }
 #chatToggle .chat-ping::after{ content:""; position:absolute; inset:0; border-radius:50%; background:var(--green); animation:chatPing 1.8s ease-out infinite; }
 @keyframes chatPing{ 0%{ transform:scale(1); opacity:.7; } 100%{ transform:scale(2.4); opacity:0; } }
+.chat-teaser{
+  position:fixed; bottom:32px; right:96px; z-index:9989;
+  background:var(--bg); color:var(--text); border:1px solid var(--border-strong);
+  padding:12px 16px; border-radius:14px 14px 4px 14px; font-size:13px; font-weight:500;
+  max-width:220px; box-shadow:0 20px 40px -20px rgba(0,0,0,.5);
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  opacity:0; transform:translateY(8px); pointer-events:none;
+  transition:opacity .4s ease, transform .4s ease;
+}
+.chat-teaser.show{ opacity:1; transform:translateY(0); pointer-events:auto; cursor:pointer; }
+@media (max-width:480px){ .chat-teaser{ right:20px; bottom:92px; max-width:180px; } }
 
 #chatWindow{ position:fixed; bottom:96px; right:24px; width:370px; max-width:calc(100vw - 32px); height:520px; max-height:calc(100vh - 140px); border-radius:22px; z-index:9991; display:flex; flex-direction:column; overflow:hidden; opacity:0; transform:translateY(16px) scale(.97); pointer-events:none; transition:opacity .25s ease, transform .25s ease; background:var(--bg-soft); border:1px solid var(--border-strong); box-shadow:0 30px 70px -20px rgba(0,0,0,.55); }
 #chatWindow.open{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
@@ -971,17 +1146,18 @@ if (window.gsap && window.ScrollTrigger) {
 }
 </style>
 
-<button id="chatToggle" aria-label="Open project assistant chat">
+<button id="chatToggle" aria-label="Open AI help desk chat">
   <i class="fas fa-comment-dots"></i>
   <span class="chat-ping"></span>
 </button>
+<div id="chatTeaser" class="chat-teaser">👋 Need help? Ask me anything about this site.</div>
 
 <div id="chatWindow">
   <div id="chatHeader">
     <img src="./assets/images/hero.jpg" alt="Yuvraj Singh">
     <div>
-      <div class="chat-title">Yuvraj's IT Project Assistant</div>
-      <div class="chat-status"><span class="dot"></span> Online — ask about my projects</div>
+      <div class="chat-title">AI Help Desk</div>
+      <div class="chat-status"><span class="dot"></span> Online — ask me anything</div>
     </div>
     <button id="chatClose" aria-label="Close chat"><i class="fas fa-xmark"></i></button>
   </div>
@@ -990,7 +1166,7 @@ if (window.gsap && window.ScrollTrigger) {
     <button class="chat-chip" data-q="What IT projects have you built?">IT Projects</button>
     <button class="chat-chip" data-q="What are your technical skills?">Skills</button>
     <button class="chat-chip" data-q="How can I contact you?">Contact</button>
-    <button class="chat-chip" data-q="Can I see your resume?">Resume</button>
+    <button class="chat-chip" data-q="How do I change the language?">Language</button>
   </div>
   <div id="chatInputRow">
     <input id="chatInput" type="text" placeholder="Ask about an IT project..." autocomplete="off">
@@ -1094,21 +1270,34 @@ if (window.gsap && window.ScrollTrigger) {
     if (t.includes("project")) {
       return projectListHTML();
     }
+    if (t.includes("language") || t.includes("hindi") || t.includes("nepali") || t.includes("german") || t.includes("translate")) {
+      return `Tap the 🌐 globe icon in the top navigation bar to switch the site between English, हिन्दी (Hindi), नेपाली (Nepali), and Deutsch (German).`;
+    }
+    if (t.includes("dark") || t.includes("light") || t.includes("theme")) {
+      return `You can switch between dark and light mode using the toggle switch next to the language icon in the top navbar.`;
+    }
+    if (t.includes("navigat") || t.includes("menu") || t.includes("section") || t.includes("where")) {
+      return `This site has sections for Home, About, Skills, Projects, Journey, Awards, Articles, and Contact — use the menu at the top (or the ☰ icon on mobile) to jump to any of them.`;
+    }
+    if (t.includes("who are you") || t.includes("what are you") || t.includes("help desk") || t.includes("helpdesk")) {
+      return `I'm the AI help desk for this site 🤖 — I can point you to Yuvraj's projects, skills, resume, and contact info, or help you navigate the page, switch language, or toggle dark/light mode.`;
+    }
 
     const match = findProject(t);
     if (match) {
       return `<strong>${match.name}</strong><br>${match.desc}<br><span style="color:var(--text-faint)">Tech: ${match.tags.join(", ")}</span><br><a href="${match.code}" target="_blank" rel="noopener">View code on GitHub</a>`;
     }
 
-    return `I'm best at answering questions about Yuvraj's IT projects — try "what IT projects have you built?" or ask about one by name (NIDS, sentiment analysis, face-recognition EVM, heart disease predictor, e-commerce site, Spotify clone, or text-to-speech tool).`;
+    return `I can help with Yuvraj's IT projects, skills, resume, contact details, or navigating/switching language & theme on this site. Try "how do I contact you?" or "what IT projects have you built?"`;
   }
 
   function openChat(){
     win.classList.add("open");
     opened = true;
+    document.getElementById("chatTeaser")?.classList.remove("show");
     if (!body.dataset.greeted) {
       body.dataset.greeted = "1";
-      setTimeout(() => addMsg("Hi, I'm Yuvraj's project assistant 🤖 Ask me about any of his IT projects — tech stack, approach, or outcome.", "bot"), 250);
+      setTimeout(() => addMsg("Hi, I'm the AI help desk for this site 🤖 Ask me about Yuvraj's IT projects, or how to navigate, switch language, or change theme.", "bot"), 250);
     }
   }
   function closeChat(){ win.classList.remove("open"); }
@@ -1132,6 +1321,15 @@ if (window.gsap && window.ScrollTrigger) {
     if (!win.classList.contains("open")) openChat();
     handleSend(btn.dataset.q);
   });
+
+  // Proactively invite visitors to chat if they haven't opened it yet
+  const teaser = document.getElementById("chatTeaser");
+  if (teaser) {
+    const teaserTimer = setTimeout(() => { if (!opened) teaser.classList.add("show"); }, 6000);
+    teaser.addEventListener("click", () => { teaser.classList.remove("show"); openChat(); });
+    setTimeout(() => teaser.classList.remove("show"), 16000);
+    toggle.addEventListener("click", () => { clearTimeout(teaserTimer); teaser.classList.remove("show"); });
+  }
 })();
 </script>
 
